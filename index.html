@@ -1,0 +1,1086 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1,shrink-to-fit=no">
+      <title>QYAOE</title>
+      <link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.css">      
+      <script src="js/jquery.min.js"></script>
+      <script src="js/players.js"></script>
+      <link href="css/bootstrap.min.css" rel="stylesheet">
+      <script type="text/javascript" src="js/datatables.min.js"></script>
+</head>
+<style>
+h1, h2, h3, h4, h5, h6, li, p, th, td, a {
+	font-family: 'Prompt', sans-serif;
+	font-weight: 400;
+	color: #fff;
+	margin: 0;
+	padding: 0;
+} 
+hr {
+        color: white;
+    } 
+.grid-container-team {
+	display: grid;
+	grid-template-columns: 30px 200px 60px 30px ;
+	align-items: center;
+}
+button, .zone-button, .zone-mini-button, .zone-close-button {
+    border: solid 1px #32bbff;
+    background: #0076b1;
+    color: #fff;
+    padding: 0px 4px;
+    cursor: pointer;
+}
+.test-1::-webkit-scrollbar {
+  /*滚动条整体样式*/
+  width : 5px;  /*高宽分别对应横竖滚动条的尺寸*/
+  height: 1px;
+  }
+  .test-1::-webkit-scrollbar-thumb {
+  /*滚动条里面小方块*/
+  border-radius: 10px;
+  box-shadow   : inset 0 0 5px rgba(0, 0, 0, 0.2);
+  background   : #535353;
+  }
+  .test-1::-webkit-scrollbar-track {
+  /*滚动条里面轨道*/
+  box-shadow   : inset 0 0 5px rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+  background   : #ededed;
+  }
+  :root{
+      --p1color:#394EF8;
+      --p2color:#FF001B;
+      --p3color:#03FF2E;
+      --p4color:#FFFF37;
+      --p5color:#03FFFD;
+      --p6color:#FF4BA9;
+      --p7color:#6E6E6E;
+      --p8color:#FF8B25;
+    }
+    .grid-container-team2 {
+      display: grid;
+      grid-template-columns: 20px 200px 80px;
+      align-items: center;
+    }
+    .grid-container-team3 {
+      display: grid;
+      grid-template-columns:20px 200px 60px 30px 30px;
+      align-items: center;
+    }
+    .player {
+      font-size:small;
+      border-radius: 50%;
+      height: 18px;
+       width: 18px;
+      text-align: center;
+      top: 50%;
+      line-height: 18px;
+    }
+    .p1 {
+      background-color: var(--p1color);
+      font-size: small;
+    }
+    
+    .p2 {
+      background-color: var(--p2color);
+      font-size: small;
+    }
+    
+    .p3 {
+      background-color: var(--p3color);
+      font-size: small;
+    }
+    
+    .p4 {
+      background-color: var(--p4color);
+      font-size: small;
+    }
+    
+    .p5 {
+      background-color: var(--p5color);
+      font-size: small;
+    }
+    
+    .p6 {
+      background-color: var(--p6color);
+      font-size: small;
+    }
+    
+    .p7 {
+      background-color: var(--p7color);
+      font-size: small;
+    }
+    
+    .p8 {
+      background-color: var(--p8color);
+      font-size: small;
+    }
+    
+    .team-input{
+      width: 40px;
+    }
+    .victor {
+      color: #f8fc05;
+    }
+
+</style>
+<body class="bg-dark small">
+<main>
+<div class="container-fluid">
+  <nav class="navbar navbar-dark navbar-expand-lg">
+    <a class="navbar-brand text-white" href="index.html">QingY帝国</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavDropdown">
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link text-white" href="index.html">QY看板</a>
+        </li>
+        
+        <li class="nav-item">
+          <a class="nav-link text-white" href="qycs.html">QY4v4</a>
+        </li>
+        
+        <li class="nav-item">
+          <a class="nav-link text-white" href="md.html">资源</a>
+        </li>
+      </ul>
+      <div>
+      </div>
+  </div>
+  </nav>
+
+<div class="row" >
+  <div class="col-sm-4 bg-dark border-top">
+      <h3 class="title center-align">大厅房间<span class="text-white" id="lobbyssum"></span>/正在游戏<span class="text-white" id="gamessum"></span></h3>
+      <div class="lobbygames88" style="margin-left: 60px; font-size: 12px;">
+      <span class="text-white" id="newdatef">....</span>
+      <button class="btn btn-light"   type="button" onclick="getunrankmatches(profile_ids)">更新</button>
+      </div>
+      <div class="lobbygames" style="margin-left: 60px; font-size: 12px;">
+        <input type= "Button" class="zone-mini-button" value=" > " onClick ="xians() "/><span class="text-white">手动分组</span>
+        <div class="games" id="demo">手动分组</div>
+      </div>
+      <div id="pp" class="bg-dark">
+        <p id="demo"></p>
+      </div>
+      <div id="pl" class="bg-dark">
+      </div>
+      <hr>
+      <div id="newlobbygames" class="newlobbygames">
+      </div>
+      <div id="pagination-container" class="current-lgames"></div> 
+  </div>
+  <div class="col-sm-4  border-top">
+    <h3 class="title center-align">群成员<span class="text-white" id="playerssum"></span></h3>
+    <div class="leaderboard-list test-1" style="max-height: 800px; overflow-y: auto; overflow-x: hidden; min-width: 400px;">
+      <table id="leaderboard-table" class="table table-dark table-striped table-responsive">
+        <thead id="table-head">
+          <tr>
+            <th>[QY]昵称</th>
+            <th>[QY]Elo</th>
+            <th>胜率</th>
+            <th>上次群局时间</th>
+          </tr>
+        </thead>
+        <tbody id = pids class="player-table-body" >
+        </tbody>
+      </table>
+      </div>
+  </div> 
+  <div class="col-sm-4  border-top">
+    <h3 class="title center-align">战绩<span class="text-white" id="newelo"></span></h3>
+    <div class="elo-list test-1" style="max-height: 800px; overflow-y: auto; overflow-x: hidden; min-width: 400px;">
+      <table id="elo-table" class="table table-dark table-striped table-sm">
+        <thead id="table-head">
+          <tr>
+            <th>[QY]昵称</th>
+            <th>[QY]Elo</th>
+            <th>ELO变化</th>
+            <th>局数</th>
+            <th>胜</th>
+            <th>败</th>
+            <th>胜率</th>
+          </tr>
+        </thead>
+        <tbody id = elopids class="player-table-body" >
+        </tbody>
+      </table>
+      </div>
+  </div> 
+</div>  
+
+<footer class="pt-3 mt-4 text-white border-top">
+  <p class="small">
+      <a class="link-light" href="qycs.html"  target="_blank" rel="noopener norefferrer">Qy游戏记录</a> |
+      <a class="link-light" href="https://space.bilibili.com/452395918/channel/collectiondetail?sid=850678"  target="_blank" rel="noopener norefferrer">Qy视频</a> |
+      <a class="link-light" href="https://www.ageofempires.com/games/aoeiide/"  target="_blank" rel="noopener norefferrer">微软帝国</a> |
+      <a class="link-light" href="https://aoe2recs.com/dashboard/"  target="_blank" rel="noopener norefferrer">观看板</a> |
+      <a class="link-light" href="https://aoe2companion.com/"  target="_blank" rel="noopener norefferrer">AoE II Companion</a> |
+      <a class="link-light" href="https://www.aoezone.net/"  target="_blank" rel="noopener norefferrer">Aoezone论坛</a> |
+      <a class="link-light" href="https://liquipedia.net/ageofempires/Main_Page"  target="_blank" rel="noopener norefferrer">比赛记录</a> |
+      <a class="link-light" href="https://www.aoe2insights.com/"  target="_blank" rel="noopener norefferrer">录像分析</a> |
+      <a class="link-light" href="https://aoe2techtree.net/"  target="_blank" rel="noopener norefferrer">科技树</a> | 
+      <a class="link-light" href="https://siegeengineers.org/"  target="_blank" rel="noopener norefferrer">开发社区</a> |
+      <a class="link-light" href="https://aoe2cm.net/"  target="_blank" rel="noopener norefferrer">禁(Ban)和选(Pick)</a> |
+      <a class="link-light" href="https://kook.top/A7YVBl"  target="_blank" rel="noopener norefferrer">QY语音KOOK</a>|
+      <a class="link-light" href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noopener norefferrer">CC BY-SA 4.0</a> |
+      <a class="text-white" href="https://github.com/" target="_blank" rel="noopener norefferrer">GitHub</a> |
+      <a class="text-white" href="https://www.aoe2database.com/" target="_blank" rel="noopener norefferrer">数据网</a></p>
+  <p class="small">Age of Empires II DE © Microsoft Corporation. Age of QYAOE was created under Microsoft's <a class="text-white" href="https://www.xbox.com/en-us/developers/rules" target="_blank" rel="noopener norefferrer">"Game Content Usage Rules"</a> using assets from Age of Empires II DE, and it is not endorsed by or affiliated with Microsoft.</p>
+</footer> 
+</div> 
+</main> 
+
+<script src="js/bootstrap.bundle.min.js"></script>
+<script> 
+let palyerst=1
+let ongamees=[] 
+let lobbies=[]
+let civsen = {}
+let mapTypes = {}
+let mapSizes = {}
+let gameTypes = {}
+let leaderboardTypes = {}
+let timeNow = Math.floor(Date.now()/1000)
+let thirtyMinsAgo = timeNow - 18800
+let liveGbMatches = []
+let pastGbMatches = []
+let liveGbPlayers = {}
+var leaderboard = [
+{
+"id": 0,
+"string": "大厅"
+},
+{
+"id": 1,
+"string": "排位"
+},
+{
+"id": 2,
+"string": "排位"
+},
+{
+"id": 3,
+"string": "排位"
+},
+{
+"id": 4,
+"string": "排位"
+},
+{
+"id": 13,
+"string": "排位"
+},
+{
+"id": 14,
+"string": "排位"
+}
+];
+
+
+function fs(id)
+{
+for (var i=0;i<playerdata.length;i++){
+  if (playerdata[i].profile_id==id){
+    return i
+  }
+  else{
+    null
+  }
+}
+}
+
+var cnk = 0;
+
+function addZero(i){
+	if (i<10) {
+		i="0" + i;
+	}
+	return i;
+}
+
+function timez(i){
+   if (i>1440){
+   var l = Math.floor(i/1440)
+   var k = i-l*1440
+   var	j = k%60;
+   k = Math.floor(k/60)
+   return l+"天"+k+"小时"+j;
+  }
+  else if (i<=1440 && i>60) {
+   var	j = i%60;
+   i = Math.floor(i/60)
+	 return i+"小时"+j;
+	}
+  else if(i<=60){
+    return i;
+  }
+}  
+
+
+
+
+let lobbyMatches = [] 
+
+function gaoe2status(res){
+            $('#newlobbygames').html("")
+            if(res.matches.length!=0){
+            var result = res.avatars;
+            var lomatches=res.matches;
+            var avatarId=[]
+            var hostID=[]
+            var lomatchid=[]
+            lomatches.forEach(lomatch=> {
+              hostID.push(lomatch.host_profile_id)
+              lomatchid.push(lomatch.id)
+            })
+            
+            result.forEach(avatar=> {
+              avatarId.push(avatar.profile_id)
+            })
+            console.log(lobbyMatches)
+            if(lobbyMatches.length>0){
+                lobbyMatches.forEach(id=>{
+                    var a = lomatchid.indexOf(id)
+                    if (a == -1) { // 移除找到的指定元素
+                       var b =lobbyMatches.indexOf(id)
+                       $('#match'+id).remove();
+                       lobbyMatches.splice(b, 1); // 移除元素
+                       }
+                })     
+            }
+            playerdata.forEach(player=> {
+            
+            if (avatarId.includes(player.profile_id) && (player.status==1 || player.status==5)){
+              player['on']='大厅房间'
+              $("#on"+player.profile_id).html('<a class="text-primary" href="aoe2de://0/'+'#'+'" target="_blank" rel="noopener norefferrer">'+player['on']+'</a>')
+            }
+            else if(avatarId.includes(player.profile_id) && player.status!=3 && player.status==2) {
+             // playerdata[fs(player.prating)]['on']='大厅房间'
+             // $("#on"+player.prating).html('<a class="text-primary" href="aoe2de://0/'+'#'+'" target="_blank" rel="noopener norefferrer">'+playerdata[fs(player.prating)]['on']+'</a>')
+            }
+            else if((player.status==1 || player.status==5) && player['on']!='大厅房间') {
+              $("#on"+player.profile_id).html(player['on'])
+            }else if((player.status==1 || player.status==5) && player['on']=='大厅房间') {
+
+              player['on']=null
+              $("#on"+player.profile_id).html(player['on'])
+            }
+
+            
+            if (hostID.includes(player.profile_id) &&( player.status==2 || player.status==1  || player.status==5)){
+
+              const index = hostID.indexOf(player.profile_id); 
+           
+              if (index > -1 ) { 
+                var match = lomatches[index]
+                 match["matchId"]=match.id
+                 match['name']=match.description
+                 match['mapName']=match.mapname
+                 match['server']=match.relayserver_region
+                 match['leaderboardName']="Unranked"
+                 match['slots']={}
+                 match.matchmembers.sort(function(a, b){return a.teamid - b.teamid})
+                 for(var i=0;i<match.maxplayers;i++){
+                  match['slots'][String(i+1)]={}
+                  if(i<match.matchmembers.length){
+                    
+                  match['slots'][String(i+1)]['profileId']=match.matchmembers[i].profile_id
+                  const index1 = avatarId.indexOf(match.matchmembers[i].profile_id)
+                  if (index1 > -1 ) {
+                  match['slots'][String(i+1)]['name']="【无记录】"
+                  
+                }
+                  else{
+                    match['slots'][String(i+1)]['profileId']=-1
+                    match['slots'][String(i+1)]['name']="Open"
+
+                  }
+
+                }
+                else{
+                  match['slots'][String(i+1)]['profile_id']=-1
+                  match['slots'][String(i+1)]['name']="Open"
+
+                }
+
+                 }
+                 console.log(match)
+                 if(lobbyMatches.includes(match.id)==false)
+                     {lobbyMatches.push(match.id)}
+                 getlobby(match)
+            }
+          }
+          
+
+          }) 
+          
+         } 
+   }
+   
+
+
+let qymatches = []
+function addLiveGames (onMatches) {
+        $('#pagination-container').html("")
+        var dataHtml=""
+        onMatches.forEach((match) =>  {
+          console.log(match)
+        let timestart = match['started']
+        var d1=new Date().getTime();
+        var d2=new Date(timestart).getTime()
+        var time = Math.round((d1-d2)/(1000*60))
+        var net= `<a class="spectate-btn" href="aoe2de://1/${match['matchId']}" target="_blank" rel="noopener norefferrer">观看比赛</a></p>`
+        var team1txt=""
+        teams=match['teams']
+        let players=[]
+        if(teams.length==1){
+          teams[0].players.sort(function(a, b){return a.color - b.color})
+          players= teams[0].players
+        }
+        if(teams.length==2){
+          teams[0].players.sort(function(a, b){return a.color - b.color})
+          teams[1].players.sort(function(a, b){return a.color - b.color})
+          players= teams[0].players.concat(teams[1].players)
+        }
+        
+        var sump =0
+        for (p in players){
+          if(profile_ids.includes(players[p]['profileId']) && match['leaderboardId']=="unranked"){
+            if(playerdata[fs(players[p].profileId)].status==2){
+              var id =playerdata[fs(players[p].profileId)].qrating
+              players[p]['rating']=playerdata[fs(id)].newqrating
+              playerdata[fs(id)]['on']='大厅游戏'
+              players[p]['name']=(players[p]['name']==playerdata[fs(id)].name)?players[p]['name']:"["+playerdata[fs(id)].name+"]"+players[p]['name']
+            }
+            else{
+              players[p]['rating']=playerdata[fs(players[p].profileId)].newqrating
+              playerdata[fs(players[p].profileId)]['on']='大厅游戏'
+              players[p]['name']=(players[p]['name']==playerdata[fs(players[p].profileId)].name)?players[p]['name']:"["+playerdata[fs(players[p].profileId)].name+"]"+players[p]['name']
+          }
+            sump++
+          }
+          else if(  profile_ids.includes(players[p]['profileId'])){
+            playerdata[fs(players[p].profileId)]['on']='排位游戏'
+            players[p]['name']=(players[p]['name']==playerdata[fs(players[p].profileId)].name)?players[p]['name']:"["+playerdata[fs(players[p].profileId)].name+"]"+players[p]['name']
+          }
+          if(players[p]['rating']==undefined){
+            players[p]['rating']="null"
+          }
+          //console.log()
+          
+          team1txt +=
+          `<div class="team-game-player grid-container-team2">
+          <p class="player p${players[p]['color']}">${players[p]['color']}</p>
+          <p class="player-name"><a  href="https://aoe2companion.com/profile/${players[p]['profileId']}" target="_blank" rel="noopener norefferrer">${players[p]['name']}</a></p>
+          <p class="player-name"><img src="Civs/${players[p]['civName'].toLowerCase()}.png" class="rounded-circle" width="20">${players[p]['rating']}</p>
+        </div>`
+        }
+    
+        var t1 = ""
+        var t2 = ""
+        if(sump==8 && match['leaderboardId']=="unranked"){
+          t1 =players[0]['rating']+players[1]['rating']+players[2]['rating']+players[3]['rating']
+          t2 = players[4]['rating']+players[5]['rating']+players[6]['rating']+players[7]['rating']
+        }
+         dataHtml +=`
+        <div class="text-white shadow-sm" id="onm${match['matchId']}">
+        <div>
+        <div class="row">
+          <div class="col-sm">
+            
+            ${team1txt}
+          </div>
+            <div class="col-sm">
+              <p class="text-center"><img src="${match['mapImageUrl']}" class="rounded-circle" width="60"></p>
+              <p class="text-center">${match['name']} </p>
+              <p class="text-center"><span id=intimes${match['matchId']}>${time}</span>min</p>
+              <p class="text-center"> ${match['mapName']}${net}</p>
+              <p class="text-center"> ${t1}     ${t2}</p>
+            </div>
+        </div><hr>
+        </div></div>`
+
+      })
+      $('#pagination-container').prepend(dataHtml);
+     };
+function RemovedLiveGames(M) {
+         console.log(M)
+          $('#onm'+M.match_id).remove();
+     };
+let pid = new Object    
+
+function getlobby(lobbymatch){
+            var playerteam =[
+                  {"id":0,"name":"<i class='fa-solid fa-chair'></i>空&nbsp;&nbsp;位","qrating":1600,"team":0},
+                  {"id":1,"name":"<i class='fa-solid fa-chair'></i>空&nbsp;&nbsp;位","qrating":1600,"team":0},
+                  {"id":2,"name":"<i class='fa-solid fa-chair'></i>空&nbsp;&nbsp;位","qrating":1600,"team":0},
+                  {"id":3,"name":"<i class='fa-solid fa-chair'></i>空&nbsp;&nbsp;位","qrating":1600,"team":0},
+                  {"id":4,"name":"<i class='fa-solid fa-chair'></i>空&nbsp;&nbsp;位","qrating":1600,"team":0},
+                  {"id":5,"name":"<i class='fa-solid fa-chair'></i>空&nbsp;&nbsp;位","qrating":1600,"team":0},
+                  {"id":6,"name":"<i class='fa-solid fa-chair'></i>空&nbsp;&nbsp;位","qrating":1600,"team":0},
+                  {"id":7,"name":"<i class='fa-solid fa-chair'></i>空&nbsp;&nbsp;位","qrating":1600,"team":0}
+                  ]
+            var t1 = 1
+            var t2 = 2
+            var playertxt =""
+            var team1txt=""
+            var i=0 
+            for (p in lobbymatch.slots){
+                  if(lobbymatch.slots[p].name=="Open"){
+                        var prating = "<span id=qr"+lobbymatch.matchId+i+">1600</span></td>" 
+                        playerteam[i].qrating = 1600
+                        var pname ="<span id=qn"+lobbymatch.matchId+i+"><i class='fa-solid fa-chair'></i>空&nbsp;&nbsp;位</span>" 
+                  }else if(profile_ids.includes(lobbymatch.slots[p].profileId)===true){
+                        if(playerdata[fs(lobbymatch.slots[p].profileId)].status==2){
+                               lobbymatch.slots[p].profileId = playerdata[fs(lobbymatch.slots[p].profileId)].qrating 
+                            }
+                         var pname = "<span id=qn"+lobbymatch.matchId+i+"><i class='fa-solid fa-user'></i>"+playerdata[fs(lobbymatch.slots[p].profileId)].name+"</span>" 
+                         playerteam[i].name = pname
+                         var prating ="<span id=qr"+lobbymatch.matchId+i+">"+playerdata[fs(lobbymatch.slots[p].profileId)].newqrating+"</span></td>"
+                         playerteam[i].qrating = Number(playerdata[fs(lobbymatch.slots[p].profileId)].newqrating) 
+                  }else {
+                         var prating = "<span id=qr"+lobbymatch.matchId+i+">1600</span></td>" 
+                         playerteam[i].qrating = 1600  
+                         var pname = "<span id=qn"+lobbymatch.matchId+i+"><i class='fa-solid fa-user'></i>"+lobbymatch.slots[p].name+"</span>" 
+                         playerteam[i].name = pname
+                  };
+              
+                  var j =i+1
+                  var pcolor =j
+                  var pteam =  "<span id=t"+lobbymatch.matchId+i+">[-]</span>"
+                  team1txt +=`<div class="team-game-player grid-container-team">
+                              <p class="player p${pcolor}">${pcolor}</p>        
+                              <p class="player-name">${pname}</p>
+                              <p>${prating}</p>
+                              <p>${pteam}</p>
+                              </div>`
+                  i++
+               }
+            playertxt = `<div class="card bg-dark text-white shadow-sm" id =match${lobbymatch.matchId}>
+                         <div class="card-body">
+                         <div class="row">
+                         <div class="col-sm">
+                         ${team1txt}
+                         </div>
+                         <div class="col-sm">
+                          <p class="text-center">  </p>
+                          <p class="text-center">  </p>
+                          <p class="text-center"> [${lobbymatch.name}]</p>
+                          <p class="text-center"> <span id=${lobbymatch.matchId}></span></p>
+                          <p class="text-center"> <i class="fa-solid fa-server"></i> ${lobbymatch.server} <a class="spectate-btn" href="aoe2de://0/${lobbymatch.matchId}" target="_blank" rel="noopener norefferrer">加入游戏</a><p></p></p>
+                          </div>
+                          </div><hr>
+                          </div></div>`;
+            if (document.getElementById("match"+lobbymatch.matchId)==null){
+                //console.log(lobbymatch) ;
+                document.querySelector('.newlobbygames').insertAdjacentHTML("beforeend",playertxt)
+                let newteam=  combination(playerteam,4,35)[0]
+                newteam['team1'][0].team = t1
+                newteam['team1'][1].team = t1
+                newteam['team1'][2].team = t1
+                newteam['team1'][3].team = t1
+                newteam['team2'][0].team = t2
+                newteam['team2'][1].team = t2
+                newteam['team2'][2].team = t2
+                newteam['team2'][3].team = t2
+                let newplayerteam = newteam['team1'].concat(newteam['team2'])
+                $("#"+lobbymatch.matchId).html("AI分组"+ newteam.team1elo+" VS " +newteam.team2elo);
+                newplayerteam.sort(function(a, b){return a.id - b.id})
+                for (var t=0;t<8;t++){
+                     $("#t"+lobbymatch.matchId+t).html("["+newplayerteam[t].team+"]");
+                     $("#qr"+lobbymatch.matchId+t).html(newplayerteam[t].qrating);
+                     $("#qn"+lobbymatch.matchId+t).html(newplayerteam[t].name);
+                   }
+                } 
+            else if (lobbymatch.leaderboardName=="Unranked"){
+                //console.log(lobbymatch) ;
+                let newteam=  combination(playerteam,4,35)[0]
+                newteam['team1'][0].team = t1
+                newteam['team1'][1].team = t1
+                newteam['team1'][2].team = t1
+                newteam['team1'][3].team = t1
+                newteam['team2'][0].team = t2
+                newteam['team2'][1].team = t2
+                newteam['team2'][2].team = t2
+                newteam['team2'][3].team = t2
+                let newplayerteam = newteam['team1'].concat(newteam['team2'])
+                $("#"+lobbymatch.matchId).html("AI分组"+ newteam.team1elo+" VS " +newteam.team2elo);
+                newplayerteam.sort(function(a, b){return a.id - b.id})
+                for (var t=0;t<8;t++){
+                       $("#t"+lobbymatch.matchId+t).html("["+newplayerteam[t].team+"]");
+                       $("#qr"+lobbymatch.matchId+t).html(newplayerteam[t].qrating);
+                      $("#qn"+lobbymatch.matchId+t).html(newplayerteam[t].name);
+                    }
+                }   
+     }
+
+
+function yinc(){
+  qingkFunction()
+  $("#demo").hide();
+  $("#pagination-container").show();
+  document.querySelector(".lobbygames").innerHTML = "<input type= 'Button' class='zone-mini-button' value=' > ' onClick ='xians()'/><span class='text-white'>手动分组</span><div class='games' id='demo'>手动分组</div>"
+} 
+
+function xians(){
+  qingkFunction()
+  $("#pagination-container").hide();
+}   
+
+function qingkFunction(){ 
+       document.querySelector(".lobbygames").innerHTML = "<input type= 'Button' class='zone-mini-button' value=' ∨ ' onClick ='yinc()'/><span class='text-white'>手动分组</span><div class='games' id='demo'></div>"
+       loobyplayers=0
+       for (var i=0;i<8;i++){
+	        if(playerteam[i].profile_id!=0){
+               $("#button"+playerteam[i].profile_id).show()
+              }
+        }
+       playerteam =[
+                  {"id":0,"profile_id":0,"name":"<i class='fa-solid fa-chair'></i>空&nbsp;&nbsp;位","qrating":1600,"team":"[-]"},
+                  {"id":1,"profile_id":0,"name":"<i class='fa-solid fa-chair'></i>空&nbsp;&nbsp;位","qrating":1600,"team":"[-]"},
+                  {"id":2,"profile_id":0,"name":"<i class='fa-solid fa-chair'></i>空&nbsp;&nbsp;位","qrating":1600,"team":"[-]"},
+                  {"id":3,"profile_id":0,"name":"<i class='fa-solid fa-chair'></i>空&nbsp;&nbsp;位","qrating":1600,"team":"[-]"},
+                  {"id":4,"profile_id":0,"name":"<i class='fa-solid fa-chair'></i>空&nbsp;&nbsp;位","qrating":1600,"team":"[-]"},
+                  {"id":5,"profile_id":0,"name":"<i class='fa-solid fa-chair'></i>空&nbsp;&nbsp;位","qrating":1600,"team":"[-]"},
+                  {"id":6,"profile_id":0,"name":"<i class='fa-solid fa-chair'></i>空&nbsp;&nbsp;位","qrating":1600,"team":"[-]"},
+                  {"id":7,"profile_id":0,"name":"<i class='fa-solid fa-chair'></i>空&nbsp;&nbsp;位","qrating":1600,"team":"[-]"}
+                  ]
+      var playertxt='<div class="team-game-team-column">'
+      for (var i=0;i<8;i++){
+          playertxt +=`<div class="team-game-player grid-container-team3">
+                       <p class="player p${i+1}">${i+1}</p>
+                       <p class="player-name"><span id=lobbyname${i}>${playerteam[i].name}</span></p>
+                       <p><span id=lobbyq${i}>${playerteam[i].qrating}</span></p>
+                      <p><span id=lobbyteam${i}>${playerteam[i].team}</span></p></div>`
+           }
+      document.querySelector('.lobbygames').insertAdjacentHTML("beforeend",playertxt+'</div><div class="game-info"><div class="elo"><p><span id=lobbymatch></span></p><button type="button" onclick="qingkFunction()">清空</button></div></div>')   
+    } 
+//getqydb()
+let onlobbyMatches=[]
+let onnewmatches=[]
+lobbiesws = new WebSocket("wss://aoe2recs.com/dashboard/api/");
+lobbiesws.onopen = function(){
+     lobbiesws.send('{"focus":true}');
+     lobbiesws.send('{"login":"undefined"}');
+     var msgid = {"browser":true}
+     lobbiesws.send(JSON.stringify(msgid));
+     document.getElementById('pp').style.display ="block";
+    }
+    
+     
+lobbiesws.onmessage = function (evt) 
+    {  
+       var received_msg = JSON.parse(evt.data);
+       
+       //console.log(received_msg)
+       if (received_msg.cls==3){
+       
+        //console.log(received_msg.data)
+        for (m in received_msg.data){
+          if((received_msg.data[m].cls==28 || received_msg.data[m].cls==27) && onlobbyMatches.length==0 && received_msg.data[m].data!=null ){
+                onlobbyMatches.push(received_msg.data[m])
+                for (var i=0;i< QYprofile_ids.length;i++){  
+                let tempArray=received_msg.data[m].data.players.filter((item) => {
+                    if(item.id!=undefined && item.id == QYprofile_ids[i])
+                    { console.log(item. QYprofile_ids[i]) 
+                      return received_msg.data[m]}
+                    });
+                //console.log(tempArray)    
+                if(tempArray.length>0){
+                  onnewmatches.push(received_msg.data[m])
+                        break;
+                }
+                }
+            }
+          
+          if((received_msg.data[m].cls==28 || received_msg.data[m].cls==27) && onlobbyMatches.length>0 && received_msg.data[m].data!=null){
+            let index =onlobbyMatches.findIndex(item => item.target_id == received_msg.data[m].target_id)
+            if(index==-1){
+              onlobbyMatches.push(received_msg.data[m])
+              for (var i=0;i< QYprofile_ids.length;i++){  
+                let tempArray=received_msg.data[m].data.players.filter((item) => {
+                if(item.id!=undefined && item.id == QYprofile_ids[i])
+                    { console.log(QYprofile_ids[i]) 
+                      return received_msg.data[m]}
+                    });
+                if(tempArray.length>0){
+                  onnewmatches.push(received_msg.data[m])
+                        break;
+                }
+                }
+             }
+            else{
+              onlobbyMatches.splice(index, 1)
+              onlobbyMatches.push(received_msg.data[m])
+              let index1 =onnewmatches.findIndex(item => item.target_id == received_msg.data[m].target_id)
+              if(index1==-1){
+                for (var i=0;i< QYprofile_ids.length;i++){  
+                let tempArray=received_msg.data[m].data.players.filter((item) => {
+                if(item.id!=undefined && item.id == QYprofile_ids[i])
+                    { console.log(QYprofile_ids[i]) 
+                      return received_msg.data[m]}
+                    });
+                if(tempArray.length>0){
+                  onnewmatches.splice(index1, 1)
+                  onnewmatches.push(received_msg.data[m])
+                        break;
+                }
+                }  
+             }
+             else{
+              onnewmatches.splice(index1, 1)
+              onnewmatches.push(received_msg.data[m])
+             }
+          }
+          if((received_msg.data[m].cls==28 || received_msg.data[m].cls==27) && onlobbyMatches.length>0 && received_msg.data[m].data==null){
+            let index =onlobbyMatches.findIndex(item => item.target_id == received_msg.data[m].target_id)
+            onlobbyMatches.splice(index, 1)
+            let index1 =onnewmatches.findIndex(item => item.target_id == received_msg.data[m].target_id)
+            if(index1!=-1){
+              onnewmatches.splice(index1, 1)}
+          }
+        }
+        
+        if(onnewmatches.length>0){
+          //console.log(onnewmatches)
+          onnewmatches.sort(function(a, b){return b.target_id - a.target_id}) 
+          let tempArray1=onnewmatches.filter((item) => {
+            return item.cls==28});
+          let tempArray2=onnewmatches.filter((item) => {
+            return item.cls==27});
+        $('#lobbyssum').html("("+tempArray1.length +")")
+        $('#gamessum').html("("+tempArray2.length +")")
+        loobyGames(onnewmatches)}
+          else{
+            $('#lobbyssum').html("(0)")
+        $('#gamessum').html("(0)")
+          }
+        
+        //addLiveGames (received_msg.data.live)
+      }
+        
+    }
+  }       
+   
+     
+lobbiesws.onclose = function()
+    { 
+       // 关闭 websocket
+       document.getElementById('pl').style.display ="block";
+       document.getElementById("pp").style.display ="block";
+       document.getElementById("demo").innerHTML = "网络错误";
+       console.log("lobbiesws连接已关闭..."); 
+    };   
+
+    
+function loobyGames (matches) {
+        var dataHtml=""
+        matches.forEach((m)=>{
+        var newmatchplayers =[]
+        var newteam = []
+        var match= m.data
+        var team1txt=""
+        var team2txt=""
+        var sump =0
+        if(match.status=="lobby"){
+          var t1 = 1
+          var t2 = 2
+        for (p in match.players)
+          {
+            if (match.players[p]['name']==undefined){
+            match.players[p]['name']="<i class='fa fa-bus'></i>空  位"}
+            if (match.players[p]['rating']==undefined){
+            match.players[p]['rating']='--'
+          }
+          match.players[p]['team']='?'
+          match.players[p]['qrating']= 1600
+          match.players[p]['pid']=sump
+          sump++
+        }
+        
+          
+           sump =0
+           for (p in match.players)
+          {
+            
+          if( QYprofile_ids.includes(match.players[p]['id']) && match['lobby']!=null){
+            if(ofs(match.players[p]['id']).status==2){
+              match.players[p]['qrating']=ofs(ofs(match.players[p]['id']).qrating).newqrating
+              match.players[p]['name']=ofs(ofs(match.players[p]['id']).qrating).name
+            }
+            else{
+              match.players[p]['qrating']=ofs(match.players[p]['id']).newqrating
+              match.players[p]['name']=ofs(match.players[p]['id']).name}
+            sump++
+          }
+        }
+          if (sump>=0){
+            //console.log(lobbymatch) ;
+            newteam =  combination(match.players,4,35)[0]
+            newteam['team1'][0].team = t1
+            newteam['team1'][1].team = t1
+            newteam['team1'][2].team = t1
+            newteam['team1'][3].team = t1
+            newteam['team2'][0].team = t2
+            newteam['team2'][1].team = t2
+            newteam['team2'][2].team = t2
+            newteam['team2'][3].team = t2
+            newmatchplayers = newteam['team1'].concat(newteam['team2'])
+            console.log(newmatchplayers);
+            newmatchplayers.sort(function(a, b){return a.pid - b.pid})
+            
+          }
+          for (p in match.players)
+          {
+          team1txt +=
+          `<div class="team-game-player grid-container-team3">
+          <p class="player p${newmatchplayers[p]['pid']+1}">${newmatchplayers[p]['pid']+1}</p>
+          <p class="player-name"><a  href="https://aoe2companion.com/profile/${newmatchplayers[p]['id']}" target="_blank" rel="noopener norefferrer">${newmatchplayers[p]['name']}</a></p>
+          <p class="player-name">${newmatchplayers[p]['qrating']}</p>
+          <p class="player-name">${newmatchplayers[p]['team']}</p>
+        </div>`
+         }
+         var d1=new Date().getTime();
+        var d2=match['lobby_created']*1000
+        var time = Math.round((d1-d2)/(1000*60)) 
+          dataHtml+=`
+        <div class="card bg-dark text-white shadow-sm" id="onm${match['id']}">
+        <div class="card-body bg-dark">
+            <p class="player-name"> 大厅房间[${newteam.team1elo}VS${newteam.team2elo}]| <a class="spectate-btn" href="${match['link']}" target="_blank" rel="noopener norefferrer"><i class="fa fa-list-ul"></i>加入比赛</a> |   ${time}min</p>
+            ${team1txt}
+        </div></div>`
+    
+          }
+          
+
+    if(match.status=="ongoing"){
+    match['qy']=""
+    var sump =0
+    for (p in match.players)
+      {
+        if ( match.players[p]['name']==undefined){
+          match.players[p]['name']='AI'}
+        if ( match.players[p]['rating']==undefined){
+          match.players[p]['rating']='--'}
+          match.players[p]['qrating']=1600
+      if(  QYprofile_ids.includes(match.players[p]['id'])){
+        match['qy']="  "
+        if(ofs(match.players[p]['id']).status==2){
+          console.log(match.players[p]['id'])
+          match.players[p]['qrating']=ofs(ofs(match.players[p]['id']).qrating).newqrating
+          match.players[p]['name']=ofs(ofs(match.players[p]['id']).qrating).name
+          
+        }
+        else{
+          //console.log(match.players[p]['id'])
+          match.players[p]['qrating']=ofs(match.players[p]['id']).newqrating
+          match.players[p]['name']=ofs(match.players[p]['id']).name
+        }
+        sump++
+      
+      }
+     
+    }  
+          
+        var t1 = 0
+        var t2 = 0
+        var qy = "     "
+
+        if(match.lobby!=undefined){
+          qy = "大厅  "
+          
+        for(var p=0;p<match.teams[0].members.length;p++ ){
+        team1txt +=
+        `<div class="team-game-player grid-container-team2">
+        <p class="player p${match.players.find(item => item.number === match.teams[0].members[p])['color']}">${match.players.find(item => item.number === match.teams[0].members[p])['color']}</p>
+        <p class="player-name"><a  href="https://aoe2companion.com/profile/${match.players.find(item => item.number === match.teams[0].members[p])['id']}" target="_blank" rel="noopener norefferrer">${match.players.find(item => item.number === match.teams[0].members[p])['name']}</a></p>
+        <p class="player-name"><img src="Civs/${match.players.find(item => item.number === match.teams[0].members[p])['civilization'].toLowerCase()}.png" class="rounded-circle" width="20">${match.players.find(item => item.number === match.teams[0].members[p])['qrating']}</p>
+        
+      </div>`
+        t1+=match.players.find(item => item.number === match.teams[0].members[p])['qrating']
+      }
+   
+     
+        for(var p=0;p<match.teams[1].members.length;p++){
+        team2txt +=
+        `<div class="team-game-player grid-container-team2">
+        <p class="player p${match.players.find(item => item.number === match.teams[1].members[p])['color']}">${match.players.find(item => item.number === match.teams[1].members[p])['color']}</p>
+        <p class="player-name"><a  href="https://aoe2companion.com/profile/${match.players.find(item => item.number === match.teams[1].members[p])['id']}" target="_blank" rel="noopener norefferrer">${match.players.find(item => item.number === match.teams[1].members[p])['name']}</a></p>
+        <p class="player-name"><img src="Civs/${match.players.find(item => item.number === match.teams[1].members[p])['civilization'].toLowerCase()}.png" class="rounded-circle" width="20">${match.players.find(item => item.number === match.teams[1].members[p])['qrating']}</p>
+
+        
+      </div>`
+        t2+=match.players.find(item => item.number === match.teams[1].members[p])['qrating']
+      }
+        }
+      
+        if(match.lobby ==undefined){
+          qy = "排位"
+          for(var p=0;p<match.teams[0].members.length;p++ ){
+            team1txt +=
+            `<div class="team-game-player grid-container-team2">
+            <p class="player p${match.players.find(item => item.number == match.teams[0].members[p])['color']}">${match.players.find(item => item.number == match.teams[0].members[p])['color']}</p>
+            <p class="player-name"><a  href="https://aoe2companion.com/profile/${match.players.find(item => item.number === match.teams[0].members[p])['id']}" target="_blank" rel="noopener norefferrer">${match.players.find(item => item.number === match.teams[0].members[p])['name']}</a></p>
+            <p class="player-name"><img src="Civs/${match.players.find(item => item.number === match.teams[0].members[p])['civilization'].toLowerCase()}.png" class="rounded-circle" width="20">${match.players.find(item => item.number === match.teams[0].members[p])['rating']}</p>
+          </div>`
+            t1+=match.players.find(item => item.number === match.teams[0].members[p])['rating']
+          }
+       
+         
+            for(var p=0;p<match.teams[1].members.length;p++){
+            team2txt +=
+            `<div class="team-game-player grid-container-team2">
+            <p class="player p${match.players.find(item => item.number === match.teams[1].members[p])['color']}">${match.players.find(item => item.number === match.teams[1].members[p])['color']}</p>
+            <p class="player-name"><a  href="https://aoe2companion.com/profile/${match.players.find(item => item.number === match.teams[1].members[p])['id']}" target="_blank" rel="noopener norefferrer">${match.players.find(item => item.number === match.teams[1].members[p])['name']}</a></p>
+            <p class="player-name"><img src="Civs/${match.players.find(item => item.number === match.teams[1].members[p])['civilization'].toLowerCase()}.png" class="rounded-circle" width="20">${match.players.find(item => item.number === match.teams[1].members[p])['rating']}</p>
+        
+            
+          </div>`
+            t2+=match.players.find(item => item.number === match.teams[1].members[p])['rating']
+          }
+          
+        } 
+        var d1=new Date().getTime();
+        var d2=match['lobby_created']*1000
+        var time = Math.round((d1-d2)/(1000*60)) 
+         dataHtml +=`
+        <div class="card  bg-dark text-white shadow-sm" id="onm${match['id']}">
+        <div class="card-body bg-dark">
+        <p class="txt2">${qy}${match['diplomacy']} ${match['qy']} ${match['rms']}| <a class="spectate-btn" href="${match['link']}" target="_blank" rel="noopener norefferrer"><i class="fa fa-eye"></i>观看比赛</a> |  ${time}min</p> 
+        <p class="txt2">TEAM 1 [${t1}] </p>
+        ${team1txt}
+        <p class="txt2">TEAM 2 [${t2}] </p>
+        ${team2txt}
+        <p id="demo"></p>
+        </div>
+        </div>`
+      }
+    })
+      document.getElementById("demo").innerHTML ="";
+      document.getElementById('pp').style.display ="none";
+      document.getElementById('pl').style.display ="block";
+      document.getElementById("pl").innerHTML=dataHtml;
+     };       
+setInterval(
+    function () {
+      getunrankmatches(profile_ids)
+      //getqyteable()
+  }, 60000);
+
+let loobyplayers = 0
+var playerteam =[
+                  {"id":0,"profile_id":0,"name":"<i class='fa-solid fa-chair'></i>空&nbsp;&nbsp;位","qrating":1600,"team":"[-]"},
+                  {"id":1,"profile_id":0,"name":"<i class='fa-solid fa-chair'></i>空&nbsp;&nbsp;位","qrating":1600,"team":"[-]"},
+                  {"id":2,"profile_id":0,"name":"<i class='fa-solid fa-chair'></i>空&nbsp;&nbsp;位","qrating":1600,"team":"[-]"},
+                  {"id":3,"profile_id":0,"name":"<i class='fa-solid fa-chair'></i>空&nbsp;&nbsp;位","qrating":1600,"team":"[-]"},
+                  {"id":4,"profile_id":0,"name":"<i class='fa-solid fa-chair'></i>空&nbsp;&nbsp;位","qrating":1600,"team":"[-]"},
+                  {"id":5,"profile_id":0,"name":"<i class='fa-solid fa-chair'></i>空&nbsp;&nbsp;位","qrating":1600,"team":"[-]"},
+                  {"id":6,"profile_id":0,"name":"<i class='fa-solid fa-chair'></i>空&nbsp;&nbsp;位","qrating":1600,"team":"[-]"},
+                  {"id":7,"profile_id":0,"name":"<i class='fa-solid fa-chair'></i>空&nbsp;&nbsp;位","qrating":1600,"team":"[-]"}
+                  ]
+
+         
+       
+document.querySelector('.lobbygames').insertAdjacentHTML("beforeend",'<div class="team-game-team-column"></div><div class="game-info"><div class="elo"><p><span id=lobbymatch></span></p></div></div>')
+            
+function addlooby(b) {
+  if(loobyplayers==0){
+    xians()
+  }
+  
+  var x=b.name;
+  
+  if (loobyplayers<8){
+    $("#button"+b.name).hide()
+    for (var i=0;i<8;i++){
+	if(playerteam[i].profile_id==0){
+    playerteam[i].profile_id=b.name
+playerteam[i].name='<input type= "Button" class="zone-mini-button" name ="'+playerdata[fs(b.name)].profile_id +'"  value="x" onClick ="dellooby(this)"/>'+playerdata[fs(b.name)].name
+playerteam[i].qrating=playerdata[fs(b.name)].newqrating
+break
+  }  
+  
+
+  }
+  loobyplayers+=1
+	console.info(playerteam,loobyplayers);
+  for (var t=0;t<8;t++){
+                 $("#lobbyteam"+t).html("[-]");
+                 $("#lobbyq"+t).html(playerteam[t].qrating);
+                 $("#lobbyname"+t).html(playerteam[t].name);
+                }
+}
+if (loobyplayers==6){
+  var team3v3= playerteam.slice(0,6)
+  console.log(team3v3)
+  let newteam=  combination(team3v3,3,10)[0]
+                newteam['team1'][0].team = 1
+                newteam['team1'][1].team = 1
+                newteam['team1'][2].team = 1
+                
+                newteam['team2'][0].team = 2
+                newteam['team2'][1].team = 2
+                newteam['team2'][2].team = 2
+                
+                let newplayerteam = newteam['team1'].concat(newteam['team2'])
+                $("#lobbymatch").html("AI分组"+ newteam.team1elo+" VS " +newteam.team2elo);
+                newplayerteam.sort(function(a, b){return a.id - b.id})
+                for (var t=0;t<6;t++){
+                 $("#lobbyteam"+t).html("["+newplayerteam[t].team+"]");
+                 $("#lobbyq"+t).html(newplayerteam[t].qrating);
+                 $("#lobbyname"+t).html(newplayerteam[t].name);
+                }
+}
+else if (loobyplayers==8){
+  let newteam=  combination(playerteam,4,35)[0]
+                newteam['team1'][0].team = 1
+                newteam['team1'][1].team = 1
+                newteam['team1'][2].team = 1
+                newteam['team1'][3].team = 1
+                newteam['team2'][0].team = 2
+                newteam['team2'][1].team = 2
+                newteam['team2'][2].team = 2
+                newteam['team2'][3].team = 2
+                let newplayerteam = newteam['team1'].concat(newteam['team2'])
+                $("#lobbymatch").html("AI分组"+ newteam.team1elo+" VS " +newteam.team2elo);
+                newplayerteam.sort(function(a, b){return a.id - b.id})
+                for (var t=0;t<8;t++){
+                 $("#lobbyteam"+t).html("["+newplayerteam[t].team+"]");
+                 $("#lobbyq"+t).html(newplayerteam[t].qrating);
+                 $("#lobbyname"+t).html(newplayerteam[t].name);
+                }
+}
+}
+
+function dellooby(b) {
+  var x=b.name;
+  $("#button"+b.name).show()
+  loobyplayers=loobyplayers-1
+  for (var i=0;i<8;i++){
+	if(playerteam[i].profile_id==b.name){
+    playerteam[i].profile_id=0
+    playerteam[i].name="<i class='fa-solid fa-chair'></i>空&nbsp;&nbsp;位"
+playerteam[i].qrating=1600 
+break
+}
+  }
+	console.info(playerteam);
+  for (var t=0;t<8;t++){
+                 $("#lobbyteam"+t).html("[-]");
+                 $("#lobbyq"+t).html(playerteam[t].qrating);
+                 $("#lobbyname"+t).html(playerteam[t].name);
+                }
+                $("#lobbymatch").html("")
+}
+
+
+</script>
+</body>
+</html>
