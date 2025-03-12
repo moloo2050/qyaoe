@@ -9,7 +9,7 @@ declare global {
 		// interface Platform {}
 		interface Platform {
 			env: {
-				mDB: qydata;
+				mDB: qy-db;
 			};
 			context: {
 			  waitUntil(promise: Promise<any>): void;
