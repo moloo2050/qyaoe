@@ -1,12 +1,17 @@
 // @ts-ignore
 export async function GET({platform,fetch}) {
     
-    let result = await platform.env.mDB.prepare(
-      "SELECT * FROM qyplayers",
-    ).run();
+  const options = {
+    method: 'GET',
+    headers: {
+    accept: 'application/json',
+    }
+  };  
+    const res1 = await fetch('https://aoe2.pages.dev/players', options);
+    let objplayers =await res1.json()
     let bili=""
     // @ts-ignore
-    result.results.forEach((r)=>{
+    objplayers.forEach((r)=>{
       if(r.bilibili!=null){
         bili=bili+"&room_ids="+String(r.bilibili)
       }
