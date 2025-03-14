@@ -1,5 +1,8 @@
+import type { RequestHandler } from "@sveltejs/kit";
+
+/** @type {import('@sveltejs/kit').RequestHandler} */
 // @ts-ignore
-export async function GET({platform,fetch}) {
+export async function GET({fetch}) {
     
   const options = {
     method: 'GET',
