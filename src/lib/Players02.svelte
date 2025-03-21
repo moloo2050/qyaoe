@@ -127,7 +127,7 @@ $:{
 </script>
 <Button on:click={() => (group.length = 0)}>Clear</Button>
 <div class="flex flex-wrap">
-  <Checkbox  choices={players01.filter((player)=>player.status ===3||player.status === 1)} bind:group groupInputClass='ms-2' groupLabelClass="w-48" />
+  <Checkbox  choices={players01.filter((player)=>player.status === 1)} bind:group groupInputClass='ms-2' groupLabelClass="w-48" />
 </div>
 <style>
  
