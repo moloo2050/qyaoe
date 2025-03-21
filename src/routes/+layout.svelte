@@ -197,8 +197,26 @@
   <Footer class="float-left">
     <div class="sm:flex sm:items-center sm:justify-between ">
     <FooterCopyright href="/" by="Flowbite™" year={2024} />
-    </div>
+    <FooterLinkGroup ulClass="flex flex-wrap items-center mt-3 text-sm text-gray-500 dark:text-gray-400 sm:mt-0">
+      <FooterLink href="https://space.bilibili.com/452395918/channel/collectiondetail?sid=850678"  target="_blank" rel="noopener norefferrer">Qy视频</FooterLink> |
+      <FooterLink href="https://www.ageofempires.com/games/aoeiide/"  target="_blank" rel="noopener norefferrer">微软帝国</FooterLink> |
+      <FooterLink href="https://aoe2recs.com/dashboard/"  target="_blank" rel="noopener norefferrer">观看板</FooterLink> |
+      <FooterLink href="https://aoe2companion.com/"  target="_blank" rel="noopener norefferrer">AoE II Companion</FooterLink> |
+      <FooterLink href="https://www.aoezone.net/"  target="_blank" rel="noopener norefferrer">Aoezone论坛</FooterLink> |
+      <FooterLink href="https://liquipedia.net/ageofempires/Main_Page"  target="_blank" rel="noopener norefferrer">比赛记录</FooterLink> |
+      <FooterLink href="https://www.aoe2insights.com/"  target="_blank" rel="noopener norefferrer">录像分析</FooterLink> |
+      <FooterLink href="https://aoe2techtree.net/"  target="_blank" rel="noopener norefferrer">科技树</FooterLink> | 
+      <FooterLink href="https://siegeengineers.org/"  target="_blank" rel="noopener norefferrer">开发社区</FooterLink> |
+      <FooterLink href="https://aoe2cm.net/"  target="_blank" rel="noopener norefferrer">禁(Ban)和选(Pick)</FooterLink> |
+      <FooterLink href="https://kook.top/tTsJV9"  target="_blank" rel="noopener norefferrer">QY语音KOOK</FooterLink>|
+      <FooterLink href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noopener norefferrer">CC BY-SA 4.0</FooterLink> |
+      <FooterLink href="https://github.com/" target="_blank" rel="noopener norefferrer">GitHub</FooterLink> |
+      <FooterLink href="https://www.aoe2database.com/" target="_blank" rel="noopener norefferrer">数据网</FooterLink>
+    </FooterLinkGroup>
+      </div>
   </Footer>
+  <p class="small">Age of Empires II DE © Microsoft Corporation. Age of QYAOE was created under Microsoft's <a  href="https://www.xbox.com/en-us/developers/rules" target="_blank" rel="noopener norefferrer">"Game Content Usage Rules"</a> using assets from Age of Empires II DE, and it is not endorsed by or affiliated with Microsoft.</p>
+
 </main>
 
 
