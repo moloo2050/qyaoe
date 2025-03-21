@@ -5,4 +5,4 @@ export async function GET({ request, platform }) {
   let result = await platform.env.mDB.prepare(
     "SELECT * FROM match",
   ).run();
-  return new Response(JSON.stringify(result.results));
+  return new Response(JSON.stringify(result.results));}
