@@ -6,6 +6,7 @@
   let { data } = $props();
   // @ts-ignore
   let teableid=[]
+  
   $matches=[]
   $profile_ids=[]
   $qyplayers=[]
@@ -181,7 +182,7 @@
       clearInterval(interval)
     }
     })
-
+    
 </script>
 <div class="column">
   <h1 class="text-3xl font-bold underline">

@@ -102,7 +102,7 @@
       </span>
   
       <span class="actions">
-        <a href= {onlobby.matchId}><EyeOutline /></a>
+        <a href= 'aoe2de://0/{onlobby.matchId}'><EyeOutline /></a>
       </span>
     </td>
   </tr>

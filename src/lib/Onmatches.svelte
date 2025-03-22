@@ -13,7 +13,7 @@
       </span>
   
       <span class="actions">
-        <a href=aoe2de://1/{onmatch.matchId}><EyeOutline /></a>
+        <a href='aoe2de://1/{onmatch.matchId}'><EyeOutline /></a>
       </span>
     </td>
   </tr>

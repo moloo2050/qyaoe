@@ -9,6 +9,20 @@
  import Onmatches from "$lib/Onmatches.svelte";
  import Lobbies from "$lib/Lobbies.svelte";
  import Lobby from "$lib/Lobby.svelte";
+ import News from "$lib/News.svelte";
+ let news={}
+ onMount(async () => {
+     const options = {
+      method: 'GET',
+      headers: {
+      accept: 'application/json',
+      
+    }
+  };
+  // @ts-ignore
+  const response =  await fetch('/news', options).then(res => res.json())
+  news=response
+    })
 </script>
 
 {#if !$connection}
@@ -72,14 +86,11 @@
       <Players01 players01={$players} />
     </div>
   </TabItem>
-  <TabItem  title="个人">
-    <p class="text-sm text-gray-500 dark:text-gray-400">
-      <b>Dashboard:</b>
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-    </p>
+  <TabItem  title="视频">
+    <News news={news} />
   </TabItem>
 
-  <TabItem  title="情谊专栏">
+  <TabItem  title="情谊">
     <p class="text-sm text-gray-500 dark:text-gray-400">
       <b>Disabled:</b>
       Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
