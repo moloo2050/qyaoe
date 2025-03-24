@@ -20,9 +20,8 @@ export async function GET({fetch}) {
  
   const dtable_uuid= await response.dtable_uuid
   // @ts-ignore
-  const response2 =   await fetch('https://cloud.seatable.cn/api-gateway/api/v2/dtables/'+dtable_uuid+'/rows/?table_name=qyplayers&convert_keys=true', options2).then(res => res.json())
-  // @ts-ignore
+  
   const response3 =   await fetch('https://cloud.seatable.cn/api-gateway/api/v2/dtables/'+dtable_uuid+'/rows/?table_name=news&convert_keys=true', options2).then(res => res.json())
-  return new Response(JSON.stringify({players: await response2.rows,news: await response3.rows}))
+  return new Response(JSON.stringify({news: await response3.rows}))
     
 }
