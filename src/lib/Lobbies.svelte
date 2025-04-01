@@ -29,6 +29,10 @@
              if  (a.status==2 || a.status==4){
                 playerteam[i].qrating=ofs(a.qrating).newqrating}
            }
+           else{
+             playerteam[i].profile_id=onlobby['players'][i].profileId
+             playerteam[i].name=onlobby['players'][i].name
+           }
         }
         let newteam = combination(playerteam,4,35)[0]
         newteam['team1'][0].team = 1

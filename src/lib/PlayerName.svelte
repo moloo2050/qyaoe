@@ -2,7 +2,8 @@
   // @ts-nocheck
   let {p} =$props();
   import {BadgeCheckSolid} from 'flowbite-svelte-icons';
-  import { Tooltip, Button  } from 'flowbite-svelte';
+  import {  Popover,Tooltip, Button  } from 'flowbite-svelte';
+
   import {players} from '$lib/store.js';
   function ofs(profile_id){
     let a= $players.find((ele) => {
@@ -22,7 +23,7 @@
 <span>
   {#if ref }
   <a href="/" class="font-bold underline dark:text-primary-500 hover:no-underline" id="p{pid}" >{p.name}</a>
-  <Tooltip triggeredBy="#p{pid}"  placement='right'>
+  <Popover triggeredBy="#p{pid}"  placement='right'>
     {#if ofs(pid).status==1 || ofs(pid).status==3}
     <table>
       <tbody>
@@ -34,7 +35,7 @@
           <tr>
         <td>
           <h2>
-            <BadgeCheckSolid size="md" class="text-red-700 dark:text-green-300 inline m-1"/>{ofs(pid).name}      
+            <a href="https://www.aoe2companion.com/profile/{p.profileId}" class="text-primary-600 dark:text-primary-500 hover:underline"> <BadgeCheckSolid size="md" class="text-red-700 dark:text-green-300 inline m-1"/>{ofs(pid).name} </a>     
           </h2>
         </td>
       </tr>
@@ -66,7 +67,7 @@
       <tr>
         <td>
           <h2>
-            <BadgeCheckSolid size="md" class="text-red-700 dark:text-green-300 inline m-1"/>{ofs(ofs(pid).qrating).name}      
+            <a href="https://www.aoe2companion.com/profile/{p.profileId}" class="text-primary-600 dark:text-primary-500 hover:underline">  <BadgeCheckSolid size="md" class="text-red-700 dark:text-green-300 inline m-1"/>{ofs(ofs(pid).qrating).name}  </a>    
           </h2>
         </td>
       </tr>
@@ -89,10 +90,11 @@
     </tbody>
     </table>  
   {/if}
-    </Tooltip>  
+    </Popover>  
   {:else}
-    {p.name}
+  <a href="https://www.aoe2companion.com/profile/{p.profileId}" class="text-primary-600 dark:text-primary-500 hover:underline"> {p.name} </a>
   {/if}
+
 </span>
 
 <style></style>
