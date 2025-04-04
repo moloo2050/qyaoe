@@ -21,10 +21,17 @@
             name ="ai";
         } 
     });
-    
-   let onlobbys= $derived(onlobby.filter(checkAdult));
+   let hei = $state(false);
+   let wonlobbys=$derived.by(() => {
+        if (hei) {
+          return onlobby.filter(match=>match.mapName=="Black Forest")
+        } else{
+          return onlobby;
+        }
+    });
+   let onlobbys= $derived(wonlobbys.filter(checkAdult));
   </script>
-  查找：<input bind:value={name} /> AI <input type="checkbox" bind:checked={yes}>（{onlobbys.length}）
+  查找：<input bind:value={name} /> AI <input type="checkbox" bind:checked={yes}>黑森林<input type="checkbox" bind:checked={hei}>（{onlobbys.length}）
   {#each onlobbys.sort(function(a, b){return b.matchId - a.matchId}) as item}
   <tr class="divider">
     <td colspan="4" id="p{item.matchId}" class="nowrap">
