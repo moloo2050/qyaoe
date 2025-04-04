@@ -1,6 +1,6 @@
 <script>
   // @ts-nocheck
- import {slots,matches,players,qyplayers,onlobbyes, onmatches ,connection} from '$lib/store.js';
+ import {slots,matches,players,qyplayers,onlobbyes, onmatches ,qyonlobbyes, qyonmatches ,connection} from '$lib/store.js';
  import { onMount } from 'svelte';
  import { Tabs, TabItem } from 'flowbite-svelte';
  import Players from "$lib/Players.svelte";
@@ -8,6 +8,7 @@
  import Players02 from "$lib/Players02.svelte";
  import Onmatches from "$lib/Onmatches.svelte";
  import Lobbies from "$lib/Lobbies.svelte";
+ import OnLobbies from "$lib/OnLobbies.svelte";
  import Lobby from "$lib/Lobby.svelte";
  import News from "$lib/News.svelte";
  let news={}
@@ -34,13 +35,15 @@
     <div class="flex flex-row ... ml-6">
       <div class="mr-20 w-900">
         <h2>
-          大厅房间({$onlobbyes.length})/正在游戏({$onmatches.length})
+          大厅房间({$qyonlobbyes.length})/正在游戏({$onmatches.length})
         </h2>
         <table id="matches">
           <tbody>
-            {#each $onlobbyes as match }
+            {#if $qyonlobbyes.length > 0}
+            {#each $qyonlobbyes as match }
             <Lobbies onlobby={match} />
             {/each}
+            {/if}
             {#each $onmatches as match }
             <Onmatches onmatch={match} />
             {/each}
@@ -90,11 +93,8 @@
     <News news={news} />
   </TabItem>
 
-  <TabItem  title="情谊">
-    <p class="text-sm text-gray-500 dark:text-gray-400">
-      <b>Disabled:</b>
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-    </p>
+  <TabItem  title="大厅({$onlobbyes.length})">
+    <OnLobbies onlobby={$onlobbyes} />
   </TabItem>
 </Tabs>
   

@@ -2,7 +2,7 @@
   import "../app.css";
   import { Footer, FooterCopyright, FooterLinkGroup, FooterLink,DarkMode } from 'flowbite-svelte';
   import { onMount } from 'svelte';
-  import {matches,players,qyplayers,onlobbyes,qyonslotes,profile_ids,onmatches,connection} from '$lib/store.js';
+  import {matches,players,qyplayers,qyonlobbyes,onlobbyes,qyonslotes,profile_ids,onmatches,connection} from '$lib/store.js';
   let { data } = $props();
   // @ts-ignore
   let teableid=[]
@@ -23,6 +23,8 @@
   // @ts-ignore
   let ws;
   let Matchesws;
+  // @ts-ignore
+  let onslotes=[]
   // @ts-ignore
   let onnewMatches=[]
   // @ts-ignore
@@ -54,8 +56,12 @@
            }
         }
         // @ts-ignore
-        if (m.type=="slotAdded" &&  ((m.data.slot==0 && $profile_ids.includes(m.data.profileId)) || (qyonlobbyMatches.length>0 && qyonlobbyMatches.some(item=> item.matchId == m.data.matchId)))){
-           $qyonslotes=[...$qyonslotes,m.data]
+        if (m.type=="slotAdded"){
+          // @ts-ignore
+          onslotes=[...onslotes,m.data]
+          // @ts-ignore
+          if((m.data.slot==0 && $profile_ids.includes(m.data.profileId)) || (qyonlobbyMatches.length>0 && qyonlobbyMatches.some(item=> item.matchId == m.data.matchId))){
+          $qyonslotes=[...$qyonslotes,m.data]
            if(m.data.slot==0){
             // @ts-ignore
             let index =onlobbyMatches.findIndex(item => item.matchId == m.data.matchId)
@@ -63,8 +69,18 @@
             qyonlobbyMatches=[... qyonlobbyMatches,onlobbyMatches[index]]
 
            }
-       }
-       if (m.type=="slotUpdated" && qyonlobbyMatches.length>0){
+          }
+        }
+       if (m.type=="slotUpdated"){
+        // @ts-ignore
+        let index2 =onslotes.findIndex(item => item.matchId == m.data.matchId && item.slot == m.data.slot )
+           if(index2 !=-1){
+           for (const x in m.data)
+           {
+            // @ts-ignore
+            onslotes[index2][x]=m.data[x]
+           }}
+        if ( qyonlobbyMatches.length>0){
            let index =$qyonslotes.findIndex(item => item.matchId == m.data.matchId && item.slot == m.data.slot )
            if(index !=-1){
            for (const x in m.data)
@@ -72,14 +88,24 @@
             $qyonslotes[index][x]=m.data[x]
            }}
        }
-       if (m.type=="slotRemoved" && qyonlobbyMatches.length>0){
+      }
+       if (m.type=="slotRemoved" ){
+        // @ts-ignore
+        let index3 =onslotes.findIndex(item => item.matchId == m.data.matchId && item.slot == m.data.slot)
+          if(index3 !=-1){
+          // @ts-ignore
+          onslotes.splice(index3, 1)
+          // @ts-ignore
+          onslotes=onslotes}
+       
+       if (qyonlobbyMatches.length>0){
           let index =$qyonslotes.findIndex(item => item.matchId == m.data.matchId && item.slot == m.data.slot)
           if(index !=-1){
           $qyonslotes.splice(index, 1)
           $qyonslotes=$qyonslotes
         }
        }
-       
+       }
        if (m.type=="lobbyRemoved"){
            // @ts-ignore
            let index =onlobbyMatches.findIndex(item => item.matchId == m.data.matchId)
@@ -107,7 +133,17 @@
         }
       });
       // @ts-ignore
-      $onlobbyes=qyonlobbyMatches
+      onlobbyMatches.forEach((match)=>{
+          match.players=[]
+        for(var i=0;i<onslotes.length;i++){
+          // @ts-ignore
+          if(onslotes[i].matchId==match.matchId){ match['players']= [...match['players'],onslotes[i]]}
+        }
+      });
+      // @ts-ignore
+      $qyonlobbyes=qyonlobbyMatches
+      // @ts-ignore
+      $onlobbyes=onlobbyMatches
       });
     ws.addEventListener('close', () => {
         console.log('大厅已关闭');

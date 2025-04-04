@@ -16,4 +16,6 @@ export const qyplayers = writable([])
 export const matches = writable([])
 export const onlobbyes = writable([])
 export const onmatches = writable([])
+export const qyonlobbyes = writable([])
+export const qyonmatches = writable([])
 export const connection = writable(false);
