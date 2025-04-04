@@ -92,7 +92,7 @@
   {/if}
     </Popover>  
   {:else}
-  <a href="https://www.aoe2companion.com/profile/{p.profileId}" class="text-primary-600 dark:text-primary-500 hover:underline"> {p.name} </a>
+  <a href="https://www.aoe2companion.com/profile/{p.profileId}" class="dark:text-primary-500 hover:underline"> {p.name} </a>
   {/if}
 
 </span>

@@ -8,16 +8,23 @@
     import PlayerName from "$lib/PlayerName.svelte";
     import {players} from '$lib/store.js';
     import {  Popover,Tooltip, Button  } from 'flowbite-svelte';
-    import { Input, Label, Helper } from 'flowbite-svelte';
+    import { Checkbox } from 'flowbite-svelte';
     import {BadgeCheckSolid} from 'flowbite-svelte-icons';
     let name = $state('');
     function checkAdult(match) {
         let playesname = match.players.map(player => player.name).join();
         return playesname.toLowerCase().includes(name.toLowerCase())
    }
+   let yes = $state(false);
+   $effect(() => {
+        if (yes) {
+            name ="ai";
+        } 
+    });
+    
    let onlobbys= $derived(onlobby.filter(checkAdult));
   </script>
-  查找：<input bind:value={name} />（{onlobbys.length}）
+  查找：<input bind:value={name} /> AI <input type="checkbox" bind:checked={yes}>（{onlobbys.length}）
   {#each onlobbys.sort(function(a, b){return b.matchId - a.matchId}) as item}
   <tr class="divider">
     <td colspan="4" id="p{item.matchId}" class="nowrap">
