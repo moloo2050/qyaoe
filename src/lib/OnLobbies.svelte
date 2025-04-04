@@ -9,7 +9,7 @@
     import {players} from '$lib/store.js';
     import {  Popover,Tooltip, Button  } from 'flowbite-svelte';
     import { Checkbox } from 'flowbite-svelte';
-    import {BadgeCheckSolid} from 'flowbite-svelte-icons';
+    import {AddColumnBeforeOutline    } from 'flowbite-svelte-icons';
     let name = $state('');
     function checkAdult(match) {
         let playesname = match.players.map(player => player.name).join();
@@ -39,7 +39,7 @@
         <HomeOutline size="md"  class="text-red-700 dark:text-green-300 inline m-1"/>{item.name} 
       </span>
       <span class="actions">
-        <a href= 'aoe2de://0/{item.matchId}'><EyeOutline /></a>
+        <a href= 'aoe2de://0/{item.matchId}'><AddColumnBeforeOutline /></a>
       </span>
       <span class="actions">
         <a href= 'aoe2de://0/{item.matchId}'>{item.mapName} || {item.server}-{item.totalSlotCount - item.players.filter((player)=>{return player.name=="Open"}).length}/{item.totalSlotCount}</a>
@@ -54,7 +54,7 @@
             {#if player.profileId!=-1}
           <td>
             <h2>
-              <a href="https://www.aoe2companion.com/profile/{player.profileId}" class="text-primary-600 dark:text-primary-500 hover:underline"> {player.name}</a>     
+              <a href="https://www.aoe2companion.com/profile/{player.profileId}"   target="_blank"  class="text-primary-600 dark:text-primary-500 hover:underline"> {player.name}</a>     
             </h2>
           </td>
           {:else}

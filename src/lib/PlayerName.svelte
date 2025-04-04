@@ -35,7 +35,7 @@
           <tr>
         <td>
           <h2>
-            <a href="https://www.aoe2companion.com/profile/{ofs(pid).profile_id}" class="text-primary-600 dark:text-primary-500 hover:underline"> <BadgeCheckSolid size="md" class="text-red-700 dark:text-green-300 inline m-1"/>{ofs(pid).name} </a>     
+            <a href="https://www.aoe2companion.com/profile/{ofs(pid).profile_id}"   target="_blank"  class="text-primary-600 dark:text-primary-500 hover:underline"> <BadgeCheckSolid size="md" class="text-red-700 dark:text-green-300 inline m-1"/>{ofs(pid).name} </a>     
           </h2>
         </td>
       </tr>
@@ -67,7 +67,7 @@
       <tr>
         <td>
           <h2>
-            <a href="https://www.aoe2companion.com/profile/{ofs(ofs(pid).qrating).profile_id}" class="text-primary-600 dark:text-primary-500 hover:underline">  <BadgeCheckSolid size="md" class="text-red-700 dark:text-green-300 inline m-1"/>{ofs(ofs(pid).qrating).name}  </a>    
+            <a href="https://www.aoe2companion.com/profile/{ofs(ofs(pid).qrating).profile_id}"   target="_blank"  class="text-primary-600 dark:text-primary-500 hover:underline">  <BadgeCheckSolid size="md" class="text-red-700 dark:text-green-300 inline m-1"/>{ofs(ofs(pid).qrating).name}  </a>    
           </h2>
         </td>
       </tr>
@@ -92,7 +92,7 @@
   {/if}
     </Popover>  
   {:else}
-  <a href="https://www.aoe2companion.com/profile/{p.profileId}" class="dark:text-primary-500 hover:underline"> {p.name} </a>
+  <a href="https://www.aoe2companion.com/profile/{p.profileId}"   target="_blank"  class="dark:text-primary-500 hover:underline"> {p.name} </a>
   {/if}
 
 </span>
