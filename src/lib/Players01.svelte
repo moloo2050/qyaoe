@@ -3,6 +3,7 @@
   import { Table, TableBody, TableBodyCell, TableBodyRow, TableHead, TableHeadCell } from 'flowbite-svelte';
   export let players01;
   import PlayerName from "$lib/PlayerName.svelte";
+  import { Card, Button, Rating, Badge } from 'flowbite-svelte';
   // @ts-ignore
   function getdate(date){
   var change = new Date(date);
@@ -22,44 +23,19 @@ players01.forEach((player)=>{
 </script>
 
 
-<table>
-  <thead>
-  <tr>
-    <th>ELO(QY)</th>
-    <th>名字</th>
-    <th>群局</th>
-    <th>胜</th>
-    <th>负</th>
-    <th>变化</th>
-    <th>胜率</th>
-    <th>上次群局</th>
-  </tr>
-</thead>
-<tbody>
+<Card padding="none" size="xl" class="grid md:grid-cols-5">
   {#each players01.sort(function(a, b){return b.games-a.games}) as player}
+    
   {#if player.status === 1}
-    <tr>
-      <td class="nowrap">
-        {player.newqrating}
-      </td>
-      <td class="nowrap">
-        {player.name}
-      </td>
-      <td class="nowrap">{player.games}</td>
-      <td class="nowrap">{player.wins}</td>
-      <td class="nowrap">{player.loses}</td>
-      <td class="nowrap">{player.qn}</td>
-      <td class="nowrap">{player.wg}</td>
-
-      <td class="nowrap">
-        {getdate(player.date)}
-      </td>
-
-    </tr>
-    {/if}
+  <figure class="flex flex-col justify-center items-center p-8 text-center bg-white rounded-t-lg border-b border-gray-200 md:rounded-t-none md:rounded-tl-lg md:border-e dark:bg-gray-800 dark:border-gray-700">
+    <img class="rounded-t-lg" src="/private/{player.name}.jpg" alt="product 1" width="120"/>
+    <blockquote class="mx-auto mb-4 max-w-2xl text-gray-500 dark:text-gray-400">
+      <p class="my-4 font-light">{player.nick}</p>
+    </blockquote>
+  </figure>
+  {/if}
   {/each}
-</tbody>
-</table>
+</Card>
 <style>
   .nowrap {
     white-space: nowrap;

@@ -248,7 +248,7 @@
       <FooterLink href="https://aoe2techtree.net/"  target="_blank" rel="noopener norefferrer">科技树</FooterLink>
       <FooterLink href="https://siegeengineers.org/"  target="_blank" rel="noopener norefferrer">开发社区</FooterLink>
       <FooterLink href="https://aoe2cm.net/"  target="_blank" rel="noopener norefferrer">禁(Ban)和选(Pick)</FooterLink>
-      <FooterLink href="https://kook.top/tTsJV9"  target="_blank" rel="noopener norefferrer">QY语音KOOK</FooterLink>
+      <FooterLink href="https://kook.vip/DDx7J8"  target="_blank" rel="noopener norefferrer">QY语音KOOK</FooterLink>
       <FooterLink href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noopener norefferrer">CC BY-SA 4.0</FooterLink>
       <FooterLink href="https://github.com/" target="_blank" rel="noopener norefferrer">GitHub</FooterLink>
       <FooterLink href="https://www.aoe2database.com/" target="_blank" rel="noopener norefferrer">数据网</FooterLink>

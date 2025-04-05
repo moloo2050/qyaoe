@@ -14,33 +14,48 @@
   var newDate = Y + M + D + h + m + s;
   return newDate
 }
+players.forEach((player)=>{
+      player.qn= player.newqrating-player.qrating
+      player.wg=(player.wins/player.games*100).toFixed(0)
+      })
 </script>
+
 
 <table>
   <thead>
   <tr>
     <th>ELO(QY)</th>
     <th>名字</th>
+    <th>群局</th>
+    <th>胜</th>
+    <th>负</th>
+    <th>变化</th>
     <th>胜率</th>
     <th>上次群局</th>
   </tr>
 </thead>
 <tbody>
   {#each players.sort(function(a, b){return b.games-a.games}) as player}
+  {#if player.status === 1}
     <tr>
       <td class="nowrap">
         {player.newqrating}
       </td>
       <td class="nowrap">
-       <PlayerName p={player} /> 
+        <PlayerName p={player} />
       </td>
-      <td class="nowrap"> 
-        {(player.wins/player.games*100).toFixed(0)}
-      </td>
+      <td class="nowrap">{player.games}</td>
+      <td class="nowrap">{player.wins}</td>
+      <td class="nowrap">{player.loses}</td>
+      <td class="nowrap">{player.qn}</td>
+      <td class="nowrap">{player.wg}</td>
+
       <td class="nowrap">
         {getdate(player.date)}
       </td>
+
     </tr>
+    {/if}
   {/each}
 </tbody>
 </table>

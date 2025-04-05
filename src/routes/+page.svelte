@@ -83,9 +83,6 @@
 
   <TabItem title="成员">
     <div class="ml-6">
-      <h2>
-      成员
-      </h2>
       <Players01 players01={$players} />
     </div>
   </TabItem>
