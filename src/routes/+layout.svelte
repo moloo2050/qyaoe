@@ -12,7 +12,7 @@
   $qyplayers=[]
   $players=data.players
 	$players.forEach((p)=>{
-        if(p.status==1 || p.status==2){
+        if(p.status==1 || p.status==2 || p.status==3){
           $profile_ids.push(p['profile_id'])
           $profile_ids=$profile_ids
           }

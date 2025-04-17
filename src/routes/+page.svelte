@@ -86,7 +86,7 @@
       <Players01 players01={$players} />
     </div>
   </TabItem>
-  <TabItem  title="视频">
+  <TabItem  title="相关信息">
     <News news={news} />
   </TabItem>
 

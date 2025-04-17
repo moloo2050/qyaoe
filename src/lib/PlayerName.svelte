@@ -54,6 +54,27 @@
           qyelo:{ofs(pid).newqrating}
         </td>
       </tr>
+      {#if ofs(pid).bilibili!=null}
+      <tr>
+        <td>
+          <a href="https://live.bilibili.com/{ofs(pid).bilibili}"   target="_blank"  class="text-primary-600 dark:text-primary-500 hover:underline">BILI</a>
+        </td>
+      </tr>
+      {/if}
+      {#if ofs(pid).douyin!=null}
+      <tr>
+        <td>
+          <a href="https://live.douyin.com/{ofs(pid).douyin}"   target="_blank"  class="text-primary-600 dark:text-primary-500 hover:underline">抖音</a>
+        </td>
+      </tr>
+      {/if}
+      {#if ofs(pid).douyu!=null}
+      <tr>
+        <td>
+          <a href="https://www.douyu.com/{ofs(pid).douyu}"   target="_blank"  class="text-primary-600 dark:text-primary-500 hover:underline">斗鱼</a>
+        </td>
+      </tr>
+      {/if}
     </tbody>
     </table>
     {:else if ofs(pid).status==2 || ofs(pid).status==4}  
@@ -87,6 +108,27 @@
           qyelo:{ofs(ofs(pid).qrating).newqrating}
         </td>
       </tr>
+      {#if ofs(ofs(pid).qrating).bilibili!=null}
+      <tr>
+        <td>
+          <a href="https://live.bilibili.com/{ofs(ofs(pid).qrating).bilibili}"   target="_blank"  class="text-primary-600 dark:text-primary-500 hover:underline">BILI</a>
+        </td>
+      </tr>
+      {/if}
+      {#if ofs(ofs(pid).qrating)!=null}
+      <tr>
+        <td>
+          <a href="https://live.douyin.com/{ofs(ofs(pid).qrating).douyin}"   target="_blank"  class="text-primary-600 dark:text-primary-500 hover:underline">抖音</a>
+        </td>
+      </tr>
+      {/if}
+      {#if ofs(ofs(pid).qrating).douyu!=null}
+      <tr>
+        <td>
+          <a href="https://www.douyu.com/{ofs(ofs(pid).qrating).douyu}"   target="_blank"  class="text-primary-600 dark:text-primary-500 hover:underline">斗鱼</a>
+        </td>
+      </tr>
+      {/if}
     </tbody>
     </table>  
   {/if}
