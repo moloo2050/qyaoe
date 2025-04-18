@@ -115,7 +115,7 @@
         </td>
       </tr>
       {/if}
-      {#if ofs(ofs(pid).qrating)!=null}
+      {#if ofs(ofs(pid).qrating).douyin!=null}
       <tr>
         <td>
           <a href="https://live.douyin.com/{ofs(ofs(pid).qrating).douyin}"   target="_blank"  class="text-primary-600 dark:text-primary-500 hover:underline">抖音</a>
