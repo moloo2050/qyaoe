@@ -24,7 +24,7 @@
   {#if ref }
   <a href="https://www.aoe2companion.com/profile/{p.profileId}" class="font-bold underline dark:text-primary-500 hover:no-underline" id="p{pid}" >{p.name}</a>
   <Popover triggeredBy="#p{pid}"  placement='right'>
-    {#if ofs(pid).status==1 || ofs(pid).status==3}
+    {#if ofs(pid).status==1}
     <table>
       <tbody>
         <tr>
@@ -32,11 +32,16 @@
             <img class="rounded-t-lg" src='.\private\{ofs(pid).name}.jpg'  alt="Avatar" width="80" />
           </td>
           </tr>
-          <tr>
+        <tr>
         <td>
           <h2>
             <a href="https://www.aoe2companion.com/profile/{ofs(pid).profile_id}"   target="_blank"  class="text-primary-600 dark:text-primary-500 hover:underline"> <BadgeCheckSolid size="md" class="text-red-700 dark:text-green-300 inline m-1"/>{ofs(pid).name} </a>     
           </h2>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          {ofs(pid).nick}
         </td>
       </tr>
       <tr>
@@ -77,7 +82,40 @@
       {/if}
     </tbody>
     </table>
-    {:else if ofs(pid).status==2 || ofs(pid).status==4}  
+    {:else if  ofs(pid).status==3}
+    <table>
+      <tbody>
+        <tr>
+          <td>
+            <h2>
+              <a href="https://www.aoe2companion.com/profile/{ofs(pid).profile_id}"   target="_blank"  class="text-primary-600 dark:text-primary-500 hover:underline"> <BadgeCheckSolid size="md" class="text-red-700 dark:text-green-300 inline m-1"/>{ofs(pid).name} </a>     
+            </h2>
+          </td>
+        </tr>
+      {#if ofs(pid).bilibili!=null}
+      <tr>
+        <td>
+          <a href="https://live.bilibili.com/{ofs(pid).bilibili}"   target="_blank"  class="text-primary-600 dark:text-primary-500 hover:underline">BILI</a>
+        </td>
+      </tr>
+      {/if}
+      {#if ofs(pid).douyin!=null}
+      <tr>
+        <td>
+          <a href="https://live.douyin.com/{ofs(pid).douyin}"   target="_blank"  class="text-primary-600 dark:text-primary-500 hover:underline">抖音</a>
+        </td>
+      </tr>
+      {/if}
+      {#if ofs(pid).douyu!=null}
+      <tr>
+        <td>
+          <a href="https://www.douyu.com/{ofs(pid).douyu}"   target="_blank"  class="text-primary-600 dark:text-primary-500 hover:underline">斗鱼</a>
+        </td>
+      </tr>
+      {/if}
+    </tbody>
+    </table>
+    {:else if ofs(pid).status==2 }  
     <table>
       <tbody>
         <tr>
