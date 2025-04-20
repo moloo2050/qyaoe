@@ -234,9 +234,8 @@
 <main class="mt-2">
 	<slot />
   <Footer class="float-left">
-    <p class="small">Age of Empires II DE © Microsoft Corporation. Age of QYAOE was created under Microsoft's <a  href="https://www.xbox.com/en-us/developers/rules" target="_blank" rel="noopener norefferrer">"Game Content Usage Rules"</a> using assets from Age of Empires II DE, and it is not endorsed by or affiliated with Microsoft.</p>
     <div class="sm:flex sm:items-center sm:justify-between ">
-    <FooterCopyright href="/" by="Flowbite™" year={2024} />
+      <FooterCopyright href="/" by="Flowbite™" year={2025} />
     <FooterLinkGroup ulClass="flex flex-wrap items-center mt-3 text-sm text-gray-500 dark:text-gray-400 sm:mt-0">
       <FooterLink href="https://space.bilibili.com/452395918/channel/collectiondetail?sid=850678"  target="_blank" rel="noopener norefferrer">Qy视频</FooterLink>
       <FooterLink href="https://www.ageofempires.com/games/aoeiide/"  target="_blank" rel="noopener norefferrer">微软帝国</FooterLink> 
