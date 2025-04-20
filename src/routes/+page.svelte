@@ -31,7 +31,7 @@
 {/if}
 {#if $connection}
 <Tabs>
-  <TabItem open title="看板({$qyonlobbyes.length+$onmatches.length})">
+  <TabItem open title="看板({$qyonlobbyes.length}/{$onmatches.length})">
     <div class="flex flex-row ... ml-6">
       <div class="mr-20 w-900">
         <h2>
