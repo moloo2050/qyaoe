@@ -11,7 +11,9 @@
  import OnLobbies from "$lib/OnLobbies.svelte";
  import Lobby from "$lib/Lobby.svelte";
  import News from "$lib/News.svelte";
+ import Matches from "$lib/Matches.svelte";
  let news={}
+ $matches= []
  onMount(async () => {
      const options = {
       method: 'GET',
@@ -22,6 +24,9 @@
   };
   // @ts-ignore
   const response =  await fetch('/news', options).then(res => res.json())
+  const response1=  await fetch('/oldmatches', options).then(res => res.json())
+  $matches=response1.matches
+  console.log($matches)
   news=response
     })
 </script>
@@ -87,9 +92,17 @@
     </div>
   </TabItem>
   <TabItem  title="相关信息">
+    {#if news.news}
     <News news={news} />
+    {/if}
   </TabItem>
-
+  <TabItem  title="QY4V4({$matches.length})">
+    {#if $matches.length > 0}
+    {#each $matches.slice(1,10) as match }
+    <Matches  match ={match} />
+    {/each}
+    {/if}
+  </TabItem>
   <TabItem  title="大厅({$onlobbyes.length})">
     <OnLobbies onlobby={$onlobbyes} />
   </TabItem>

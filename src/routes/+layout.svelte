@@ -6,8 +6,6 @@
   let { data } = $props();
   // @ts-ignore
   let teableid=[]
-  
-  $matches=[]
   $profile_ids=[]
   $qyplayers=[]
   $players=data.players
