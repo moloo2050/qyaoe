@@ -15,12 +15,12 @@ export async function GET({fetch}) {
   }// @ts-ignore
   const matches1000 =  await fetch('https://aoe2.pages.dev/matches1000', options).then(res1 => res1.json())
   for (let i = 0; i < matches1000.length; i++) {
-    const element = JSON.parse(match[i].matchelo);
+    const element = JSON.parse(matches1000[i].matchelo);
     matches.push(element)
   }// @ts-ignore
   const matches2000 =  await fetch('https://aoe2.pages.dev/matches2000', options).then(res2 => res2.json())
   for (let i = 0; i < matches2000.length; i++) {
-    const element = JSON.parse(match[i].matchelo);
+    const element = JSON.parse(matches2000[i].matchelo);
     matches.push(element)
   }
   // @ts-ignore
@@ -28,7 +28,7 @@ export async function GET({fetch}) {
   
   
   for (let i = 0; i < matches3000.length; i++) {
-    const element = JSON.parse(match[i].matchelo);
+    const element = JSON.parse(matches3000[i].matchelo);
     matches.push(element)
   }
   return new Response(JSON.stringify({matches: matches}))

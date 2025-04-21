@@ -1,12 +1,25 @@
 <script>
 // @ts-nocheck
 
-  export let match;
+  export let matches;
   import {HomeOutline,EyeOutline } from 'flowbite-svelte-icons';
   import MatchPlayer from "$lib/MatchPlayer.svelte";
+  import { Pagination } from 'flowbite-svelte';
+  let pagel=1
+  matches.sort(function(a, b){return b.match_id-a.match_id})
+  let pages = [{ name: 1}, { name: 2 }, { name: 3 }, { name: 4 }, { name: 5 }];
+  const previous = () => {
+    pagel=1
+  };
+  const next = () => {
+    pagel=10
+  };
+  const handleClick = () => {
+    alert(active);
+  };
 </script>
-
-<p colspan="0" class="nowrap">
+{#each matches.slice(pagel,pagel+9) as match }
+<p class="nowrap">
     <span class="highlight">
       <HomeOutline size="md" class="text-red-700 dark:text-green-300 inline m-1"/>QY4V4 on {match.map_name}
     </span>
@@ -33,12 +46,19 @@
     </td>
     
     <td class="rate">
-      ({player.qelo})
+      {#if player.qelo > 0}
+        <span class="text-green-500">+{player.qelo}</span>
+      {:else if player.qelo < 0}
+        <span class="text-red-500">{player.qelo}</span>
+      
+      {/if}
+      
     </td>
   </tr>
   {/each}
 {/each}
-
+{/each}
+<Pagination {pages} on:previous={previous} on:next={next} on:click={handleClick} />
 <style>
   .highlight {
     background-color: #f0f0f0;

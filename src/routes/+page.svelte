@@ -98,9 +98,9 @@
   </TabItem>
   <TabItem  title="QY4V4({$matches.length})">
     {#if $matches.length > 0}
-    {#each $matches.slice(1,10) as match }
-    <Matches  match ={match} />
-    {/each}
+    
+    <Matches  matches ={$matches} />
+    
     {/if}
   </TabItem>
   <TabItem  title="大厅({$onlobbyes.length})">
