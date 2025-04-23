@@ -5,11 +5,11 @@
   import {HomeOutline,EyeOutline } from 'flowbite-svelte-icons';
   import MatchPlayer from "$lib/MatchPlayer.svelte";
   import { Pagination } from 'flowbite-svelte';
-  let pagel=1
+  let pagel=0
   matches.sort(function(a, b){return b.match_id-a.match_id})
   let pages = [{ name: 1}, { name: 2 }, { name: 3 }, { name: 4 }, { name: 5 }];
   const previous = () => {
-    pagel=1
+    pagel=0
   };
   const next = () => {
     pagel=10
@@ -17,16 +17,33 @@
   const handleClick = () => {
     alert(active);
   };
+  function getdate(date){
+  var change = new Date(date);
+  var Y = change.getFullYear() + "-";
+  var M = (change.getMonth() + 1 < 10 ? "0" + (change.getMonth() + 1) : change.getMonth() + 1) + "-";
+  var D= (change.getDate() < 10 ? "0" + (change.getDate()) : change.getDate()) + " ";
+  var h= (change.getHours() < 10 ? "0" + (change.getHours()) : change.getHours()) + ":";
+  var m= (change.getMinutes() < 10 ? "0" + (change.getMinutes()) : change.getMinutes()) + ":";
+  var s= (change.getSeconds() < 10 ? "0" + (change.getSeconds()) : change.getSeconds());
+  var newDate = Y + M + D + h + m + s;
+  return newDate
+}
 </script>
-{#each matches.slice(pagel,pagel+9) as match }
-<p class="nowrap">
+<table>
+  <tbody>
+{#each matches.slice(pagel,pagel+4) as match }
+<tr class="divider">
+  <td colspan="5" class="nowrap">
     <span class="highlight">
       <HomeOutline size="md" class="text-red-700 dark:text-green-300 inline m-1"/>QY4V4 on {match.map_name}
     </span>
-</p>
+    
+  </td>
+</tr>
+
 {#each match.teams as t, i}
   <tr>
-      <td class="team" colspan="5"><b>Team {i + 1}</b></td>
+      <td class="team" colspan="5"><b>队伍 {i + 1}</b></td>
   </tr>
   {#each match.teams[i] as player }
   <tr>
@@ -35,13 +52,13 @@
         {player.color}
       </span>
     </td>
-    <td class="nowrap player pl-32">
+    <td class="nowrap player">
       {player.name}
     </td>
     <td class="nowrap">
       {player.civ_name}
     </td>
-    <td class="nowrap">
+    <td class="rate">
       {player.qrating}
     </td>
     
@@ -57,7 +74,18 @@
   </tr>
   {/each}
 {/each}
+<tr class="divider">
+  <td colspan="5" class="nowrap">
+   
+    {getdate(match.started)}
+    <span class="actions">
+      {Math.round((new Date(match['finished']).getTime()-new Date(match['started']).getTime())/60000)}分钟
+    </span>
+  </td>
+</tr>
 {/each}
+</tbody>
+</table>
 <Pagination {pages} on:previous={previous} on:next={next} on:click={handleClick} />
 <style>
   .highlight {

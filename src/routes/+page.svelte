@@ -71,7 +71,7 @@
         <h2 class="w-72">
           手动分组
         </h2>
-        <table id="matches" >
+        <table>
           <tbody >
             <Lobby slots={$slots} />
           </tbody>
@@ -97,11 +97,15 @@
     {/if}
   </TabItem>
   <TabItem  title="QY4V4({$matches.length})">
-    {#if $matches.length > 0}
+    <div class="ml-6">
+        {#if $matches.length > 0}
     
-    <Matches  matches ={$matches} />
+        <Matches  matches ={$matches} />
     
     {/if}
+  </div> 
+   
+    
   </TabItem>
   <TabItem  title="大厅({$onlobbyes.length})">
     <OnLobbies onlobby={$onlobbyes} />
