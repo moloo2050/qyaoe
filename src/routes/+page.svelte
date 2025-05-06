@@ -60,7 +60,7 @@
         <h2>
           活跃成员（{$qyplayers.length}）
         </h2>
-        <Players players={$qyplayers} />
+        <Players/>
       </div>
     </div>
   </TabItem>

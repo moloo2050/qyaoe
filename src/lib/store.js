@@ -19,3 +19,4 @@ export const onmatches = writable([])
 export const qyonlobbyes = writable([])
 export const qyonmatches = writable([])
 export const connection = writable(false);
+export const perPage = writable(0);

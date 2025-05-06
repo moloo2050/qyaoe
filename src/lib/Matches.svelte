@@ -4,19 +4,14 @@
   export let matches;
   import {HomeOutline,EyeOutline } from 'flowbite-svelte-icons';
   import MatchPlayer from "$lib/MatchPlayer.svelte";
-  import { Pagination } from 'flowbite-svelte';
-  let pagel=0
+  import  Pagination  from '$lib/Pagination.svelte';
+  import { Button } from 'flowbite-svelte';
+  const examples = 'The Pudding is a digital publication that explains ideas debated in culture with visual essays.'.split(' ')
+	
+	
+  let page=0
   matches.sort(function(a, b){return b.match_id-a.match_id})
-  let pages = [{ name: 1}, { name: 2 }, { name: 3 }, { name: 4 }, { name: 5 }];
-  const previous = () => {
-    pagel=0
-  };
-  const next = () => {
-    pagel=10
-  };
-  const handleClick = () => {
-    alert(active);
-  };
+  let values
   function getdate(date){
   var change = new Date(date);
   var Y = change.getFullYear() + "-";
@@ -29,9 +24,10 @@
   return newDate
 }
 </script>
+{#if values}
 <table>
   <tbody>
-{#each matches.slice(pagel,pagel+4) as match }
+{#each values as match}
 <tr class="divider">
   <td colspan="5" class="nowrap">
     <span class="highlight">
@@ -86,7 +82,9 @@
 {/each}
 </tbody>
 </table>
-<Pagination {pages} on:previous={previous} on:next={next} on:click={handleClick} />
+{/if}
+
+<Pagination rows={matches} perPage={5} bind:trimmedRows={values} />
 <style>
   .highlight {
     background-color: #f0f0f0;

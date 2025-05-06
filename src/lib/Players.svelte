@@ -1,6 +1,6 @@
 <script>
 // @ts-nocheck
-  export let players;
+  import {players} from '$lib/store.js';
   import PlayerName from "$lib/PlayerName.svelte";
   // @ts-ignore
   function getdate(date){
@@ -14,10 +14,10 @@
   var newDate = Y + M + D + h + m + s;
   return newDate
 }
-players.forEach((player)=>{
+$:{$players.forEach((player)=>{
       player.qn= player.newqrating-player.qrating
       player.wg=(player.wins/player.games*100).toFixed(0)
-      })
+      })}
 </script>
 
 
@@ -35,7 +35,7 @@ players.forEach((player)=>{
   </tr>
 </thead>
 <tbody>
-  {#each players.sort(function(a, b){return b.games-a.games}) as player}
+  {#each $players.sort(function(a, b){return  b.date.localeCompare(a.date)}) as player}
   {#if player.status === 1}
     <tr>
       <td class="nowrap">
