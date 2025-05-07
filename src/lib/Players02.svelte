@@ -19,11 +19,12 @@
 
 players01.forEach((player)=>{
       player.value=player.profile_id
-      player.label=player.name
+      player.label=player.name+'-'+player.newqrating
+      
       player.qn= player.newqrating-player.qrating
       player.wg=(player.wins/player.games*100).toFixed(0)
       })
-players01.sort(function(a, b){return b.games-a.games})     
+players01.sort(function(a, b){return b.newqrating-a.newqrating})     
 function ofs(profile_id){
         let a= players01.find((ele) => {
           return ele.profile_id==profile_id

@@ -32,7 +32,9 @@
 </script>
 
 {#if !$connection}
+  <div class="flex flex-row ... ml-6">
     <span>[OFFLINE]</span>
+  </div>
 {/if}
 {#if $connection}
 <Tabs>

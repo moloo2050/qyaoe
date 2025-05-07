@@ -6,9 +6,54 @@
   import MatchPlayer from "$lib/MatchPlayer.svelte";
   import  Pagination  from '$lib/Pagination.svelte';
   import { Button } from 'flowbite-svelte';
-  const examples = 'The Pudding is a digital publication that explains ideas debated in culture with visual essays.'.split(' ')
-	
-	
+  import { Select, Label } from "flowbite-svelte";
+  import {qyplayers} from '$lib/store.js';
+  $:{ $qyplayers.sort(function(a, b){return  a.name.localeCompare(b.name)})   
+      $qyplayers.forEach((player)=>{
+      player.value=player.profile_id
+      player.qn= player.newqrating-player.qrating
+      player.wg=(player.wins/player.games*100).toFixed(0)
+      })}
+  let qyplayered = "all";
+  let maps=[{'value':'Arabia','name':'Arabia'}]
+  let map="all"
+  matches.forEach((match)=>{
+      function checkAdult(map) {
+      return map.name == match.map_name;
+    }
+      if (maps.findIndex(checkAdult)==-1){
+      maps.push({'value':match.map_name,'name':match.map_name})
+      maps=maps
+      }
+      
+     })
+  maps.sort(function(a, b){return  a.name.localeCompare(b.name)})
+     
+
+  let newmatches =matches
+  $:{
+    if(qyplayered!="all"){matches.forEach((match)=>{
+      function checkAdult(match) {
+        let profile_ids=[]
+        if(match.teams[0][0].qelo){
+        match.teams[0].forEach((p)=>{
+          profile_ids.push(p.profile_id)})
+        match.teams[1].forEach((p)=>{
+          profile_ids.push(p.profile_id)})}
+      return   profile_ids.includes (Number(qyplayered));
+    }
+    newmatches = matches.filter(checkAdult)
+    })
+   }
+   if(map!="all"){newmatches.forEach((match)=>{
+      function checkAdult(match) {
+        
+      return   match.map_name==map;
+    }
+    newmatches = newmatches.filter(checkAdult)
+    })
+   }
+   }
   let page=0
   matches.sort(function(a, b){return b.match_id-a.match_id})
   let values
@@ -25,6 +70,22 @@
 }
 </script>
 {#if values}
+{newmatches.length}
+
+<Label for="qyplayer">成员</Label>
+<Select id="qyplayer" class="mt-2" bind:value={qyplayered} placeholder="">
+  <option selected value="all">All</option>
+  {#each $qyplayers as { value, name }}
+    <option {value}>{name}</option>
+  {/each}
+</Select>
+<Label for="maps">地图-{map}</Label>
+<Select id="maps" class="mt-2" bind:value={map} placeholder="">
+  <option selected value="all">All</option>
+  {#each maps as { value, name }}
+    <option {value}>{name}</option>
+  {/each}
+</Select>
 <table>
   <tbody>
 {#each values as match}
@@ -84,7 +145,7 @@
 </table>
 {/if}
 
-<Pagination rows={matches} perPage={5} bind:trimmedRows={values} />
+<Pagination rows={newmatches} perPage={5} bind:trimmedRows={values} />
 <style>
   .highlight {
     background-color: #f0f0f0;
