@@ -32,7 +32,7 @@
 
   let newmatches =matches
   $:{
-    if(qyplayered!="all"){matches.forEach((match)=>{
+    if(qyplayered!="all"){
       function checkAdult(match) {
         let profile_ids=[]
         if(match.teams[0][0].qelo){
@@ -43,15 +43,40 @@
       return   profile_ids.includes (Number(qyplayered));
     }
     newmatches = matches.filter(checkAdult)
-    })
+    
    }
-   if(map!="all"){newmatches.forEach((match)=>{
+   if(qyplayered!="all"&&map!="all"){
+    let midmatches=[]
+      function checkAdult(match) {
+        let profile_ids=[]
+        if(match.teams[0][0].qelo){
+        match.teams[0].forEach((p)=>{
+          profile_ids.push(p.profile_id)})
+        match.teams[1].forEach((p)=>{
+          profile_ids.push(p.profile_id)})}
+      return   profile_ids.includes (Number(qyplayered));
+    }
+    midmatches = matches.filter(checkAdult)
+    
+    
+      function checkAdult2(match) {
+        
+      return   match.map_name==map;
+    }
+    newmatches = midmatches.filter(checkAdult2)
+   
+   }
+   if(qyplayered=="all"&&map!="all"){
       function checkAdult(match) {
         
       return   match.map_name==map;
     }
-    newmatches = newmatches.filter(checkAdult)
-    })
+    newmatches = matches.filter(checkAdult)
+    
+   }
+   
+   if(qyplayered=="all"&&map=="all"){
+    newmatches =matches
    }
    }
   let page=0
@@ -70,28 +95,32 @@
 }
 </script>
 {#if values}
-{newmatches.length}
-
-<Label for="qyplayer">成员</Label>
-<Select id="qyplayer" class="mt-2" bind:value={qyplayered} placeholder="">
+历史比赛（{newmatches.length}）
+<div class="flex flex-row">
+  <Label for="qyplayer" class="mt-2 w-32">成员</Label>
+  <Label for="maps" class="mt-2 w-40">地图</Label>
+</div>
+<div class="flex flex-row">
+  <Select id="qyplayer" size="sm" class="mt-2  w-32" bind:value={qyplayered} placeholder="">
   <option selected value="all">All</option>
   {#each $qyplayers as { value, name }}
     <option {value}>{name}</option>
   {/each}
-</Select>
-<Label for="maps">地图-{map}</Label>
-<Select id="maps" class="mt-2" bind:value={map} placeholder="">
+ </Select>
+
+ <Select id="maps" size="sm" class="mt-2 w-40" bind:value={map} placeholder="">
   <option selected value="all">All</option>
   {#each maps as { value, name }}
     <option {value}>{name}</option>
   {/each}
-</Select>
+ </Select>
+</div>
 <table>
   <tbody>
 {#each values as match}
 <tr class="divider">
   <td colspan="5" class="nowrap">
-    <span class="highlight">
+    <span>
       <HomeOutline size="md" class="text-red-700 dark:text-green-300 inline m-1"/>QY4V4 on {match.map_name}
     </span>
     
