@@ -31,6 +31,7 @@
     "wrangler": "^3.114.1"
   },
   "dependencies": {
-    "@tailwindcss/typography": "^0.5.15"
+    "@tailwindcss/typography": "^0.5.15",
+    "svelte-table": "^0.6.4"
   }
 }

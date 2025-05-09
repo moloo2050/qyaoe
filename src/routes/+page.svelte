@@ -25,7 +25,10 @@
   // @ts-ignore
   const response =  await fetch('/news', options).then(res => res.json())
   const response1=  await fetch('/oldmatches', options).then(res => res.json())
-  $matches=response1.matches
+  function checkAdult(match) {
+      return  match.teams[0][0].qelo ;
+    }
+    $matches = response1.matches.filter(checkAdult)
   console.log($matches)
   news=response
     })

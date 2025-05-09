@@ -7,13 +7,22 @@
   import  Pagination  from '$lib/Pagination.svelte';
   import { Button } from 'flowbite-svelte';
   import { Select, Label } from "flowbite-svelte";
-  import {qyplayers} from '$lib/store.js';
+  import {players,qyplayers} from '$lib/store.js';
+  import SvelteTable from "svelte-table";
+  
+  let tplayers=[]
+  $players.forEach((p)=>{
+       tplayers.push({profile_id:p.profile_id,status:p.status,name:p.name,games:0,wins:0,qrating:0,newqrating:0,elo:0})
+       tplayers=tplayers
+      })  
   $:{ $qyplayers.sort(function(a, b){return  a.name.localeCompare(b.name)})   
       $qyplayers.forEach((player)=>{
       player.value=player.profile_id
       player.qn= player.newqrating-player.qrating
       player.wg=(player.wins/player.games*100).toFixed(0)
-      })}
+      })
+      
+    }
   let qyplayered = "all";
   let maps=[{'value':'Arabia','name':'Arabia'}]
   let map="all"
@@ -28,10 +37,13 @@
       
      })
   maps.sort(function(a, b){return  a.name.localeCompare(b.name)})
-     
+
+  
+  let values
 
   let newmatches =matches
   $:{
+    
     if(qyplayered!="all"){
       function checkAdult(match) {
         let profile_ids=[]
@@ -76,12 +88,43 @@
    }
    
    if(qyplayered=="all"&&map=="all"){
-    newmatches =matches
+   
+    newmatches = matches
    }
+  tplayers=[]
+  $players.forEach((p)=>{
+       tplayers.push({profile_id:p.profile_id,status:p.status,name:p.name,games:0,wins:0,loses:0,wl:0,qrating:0,newqrating:0,elo:0})
+       tplayers=tplayers
+      })  
+   let oldmatches = newmatches
+   oldmatches.sort(function(a, b){return a.match_id-b.match_id})   
+   oldmatches.forEach((match) => {
+    match.teams.forEach((team) => {
+      team.forEach((p) => { 
+        for(var t=0;t<tplayers.length;t++ ){
+          if(tplayers[t].profile_id==p.profile_id && (new Date(match['finished']).getTime()-new Date(match['started']).getTime())>=600000){
+          tplayers[t].games++
+          if(p.won){tplayers[t].wins++}
+          if(tplayers[t].qrating==0){tplayers[t].qrating=p.qrating}
+          tplayers[t].newqrating=p.newqrating
+          tplayers[t].elo=tplayers[t].elo+p.qelo
+          tplayers[t].loses=tplayers[t].games-tplayers[t].wins
+          tplayers[t].wl=(tplayers[t].wins/tplayers[t].games*100).toFixed(0)
+        }
+      }
+      })
+    })
+   })  
+
+   function tplayerscheckAdult(p) {
+        
+        return   p.status==1 && p.games>0;
+      }
+      tplayers=tplayers.filter(tplayerscheckAdult)
+  console.log(tplayers)
+  newmatches.sort(function(a, b){return b.match_id-a.match_id})
    }
-  let page=0
-  matches.sort(function(a, b){return b.match_id-a.match_id})
-  let values
+  
   function getdate(date){
   var change = new Date(date);
   var Y = change.getFullYear() + "-";
@@ -93,13 +136,65 @@
   var newDate = Y + M + D + h + m + s;
   return newDate
 }
+
+const columns = [
+  {
+    key: "name",
+    title: "[QY]昵称",
+    value: v => v.name,
+    sortable: true,
+    headerClass: "text-left",
+  },
+  {
+    key: "newqrating",
+    title: "[QY]Elo",
+    value: v => v.newqrating,
+    sortable: true,
+    headerClass: "text-left,style='width: 30px;'",
+  },
+  {
+    key: "elo",
+    title: "ELO变化",
+    value: v => v.elo,
+    sortable: true,
+    headerClass: "text-left",
+  },
+  {
+    key: "games",
+    title: "局数",
+    value: v => v.games,
+    sortable: true,
+    headerClass: "text-left",
+  },
+  {
+    key: "wins",
+    title: "胜",
+    value: v => v.wins,
+    sortable: true,
+    headerClass: "text-left",
+  },
+  {
+    key: "loses",
+    title: "败",
+    value: v => v.loses,
+    sortable: true,
+    headerClass: "text-left td ",
+  },
+  {
+    key: "wl",
+    title: "胜率",
+    value: v => v.wl,
+    sortable: true,
+    headerClass: "text-left td ",
+  }
+  ];
 </script>
-{#if values}
 历史比赛（{newmatches.length}）
 <div class="flex flex-row">
   <Label for="qyplayer" class="mt-2 w-32">成员</Label>
   <Label for="maps" class="mt-2 w-40">地图</Label>
 </div>
+
 <div class="flex flex-row">
   <Select id="qyplayer" size="sm" class="mt-2  w-32" bind:value={qyplayered} placeholder="">
   <option selected value="all">All</option>
@@ -114,9 +209,15 @@
     <option {value}>{name}</option>
   {/each}
  </Select>
+ 
 </div>
-<table>
-  <tbody>
+
+<div class="flex flex-row ... ml-6">
+<div class="mr-2 w-900">
+  {#if values}
+  <table>
+<tbody>
+
 {#each values as match}
 <tr class="divider">
   <td colspan="5" class="nowrap">
@@ -174,6 +275,13 @@
 </table>
 {/if}
 
+
+</div>
+<div class="ml-20 w-1200">
+  <SvelteTable columns="{columns}" rows="{tplayers}"></SvelteTable>
+</div>
+
+</div>
 <Pagination rows={newmatches} perPage={5} bind:trimmedRows={values} />
 <style>
   .highlight {
