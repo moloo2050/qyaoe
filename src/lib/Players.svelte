@@ -2,6 +2,7 @@
 // @ts-nocheck
   import {players} from '$lib/store.js';
   import PlayerName from "$lib/PlayerName.svelte";
+  import SvelteTable from "svelte-table";
   // @ts-ignore
   function getdate(date){
   var change = new Date(date);
@@ -18,47 +19,74 @@ $:{$players.forEach((player)=>{
       player.qn= player.newqrating-player.qrating
       player.wg=(player.wins/player.games*100).toFixed(0)
       })}
+  function tplayerscheckAdult(p) {
+        
+        return   p.status==1 && p.games>0;
+      }   
+  const columns = [
+  
+  {
+    key: "newqrating",
+    title: "[QY]Elo",
+    value: v => v.newqrating,
+    sortable: true,
+    headerClass: "text-left,style='width: 30px;'",
+  },
+  {
+    key: "name",
+    title: "[QY]昵称",
+    value: v => v.name,
+    sortable: true,
+    headerClass: "text-left",
+  },
+  {
+    key: "elo",
+    title: "ELO变化",
+    value: v => v.newqrating-v.qrating,
+    sortable: true,
+    headerClass: "text-left",
+  },
+  {
+    key: "games",
+    title: "局数",
+    value: v => v.games,
+    sortable: true,
+    headerClass: "text-left",
+  },
+  {
+    key: "wins",
+    title: "胜",
+    value: v => v.wins,
+    sortable: true,
+    headerClass: "text-left",
+  },
+  {
+    key: "loses",
+    title: "败",
+    value: v => v.games-v.wins,
+    sortable: true,
+    headerClass: "text-left td ",
+  },
+  {
+    key: "wg",
+    title: "胜率",
+    value: v => v.wg,
+    sortable: true,
+    headerClass: "text-left td ",
+  }
+  ,
+  {
+    key: "date",
+    title: "上次群局",
+    value: v => getdate(v.date),
+    sortable: true,
+    headerClass: "text-left td ",
+  }
+  ];      
 </script>
+<SvelteTable classNameTable ="table" columns="{columns}" rows="{$players.filter(tplayerscheckAdult)}"></SvelteTable>
 
 
-<table>
-  <thead>
-  <tr>
-    <th>ELO(QY)</th>
-    <th>名字</th>
-    <th>群局</th>
-    <th>胜</th>
-    <th>负</th>
-    <th>变化</th>
-    <th>胜率</th>
-    <th>上次群局</th>
-  </tr>
-</thead>
-<tbody>
-  {#each $players.sort(function(a, b){return  b.date.localeCompare(a.date)}) as player}
-  {#if player.status === 1}
-    <tr>
-      <td class="nowrap">
-        {player.newqrating}
-      </td>
-      <td class="nowrap">
-        <PlayerName p={player} />
-      </td>
-      <td class="nowrap">{player.games}</td>
-      <td class="nowrap">{player.wins}</td>
-      <td class="nowrap">{player.loses}</td>
-      <td class="nowrap">{player.qn}</td>
-      <td class="nowrap">{player.wg}</td>
-
-      <td class="nowrap">
-        {getdate(player.date)}
-      </td>
-
-    </tr>
-    {/if}
-  {/each}
-</tbody>
-</table>
 <style>
   .nowrap {
     white-space: nowrap;
