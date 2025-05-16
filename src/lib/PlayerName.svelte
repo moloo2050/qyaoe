@@ -1,6 +1,6 @@
 <script>
   // @ts-nocheck
-  let {p} =$props();
+  let {row} =$props();
   import {BadgeCheckSolid} from 'flowbite-svelte-icons';
   import {  Popover,Tooltip, Button  } from 'flowbite-svelte';
 
@@ -16,13 +16,13 @@
               return a
           }
   }
-  let pid = $derived((p.profile_id!=undefined)? p.profile_id:p.profileId)
+  let pid = $derived((row.profile_id!=undefined)? row.profile_id:row.profileId)
   let ref = $derived(ofs(pid))
 </script>
 
 <span>
   {#if ref }
-  <p  class="font-bold underline dark:text-primary-500 hover:no-underline" id="p{pid}" >{p.name}</p>
+  <p  class="font-bold underline dark:text-primary-500 hover:no-underline" id="p{pid}" >{row.name}</p>
   <Popover triggeredBy="#p{pid}"  placement='right'>
     {#if ofs(pid).status==1}
     <table>
@@ -179,7 +179,7 @@
   {/if}
     </Popover>  
   {:else}
-  <a href="https://www.aoe2companion.com/profile/{p.profileId}"   target="_blank"  class="dark:text-primary-500 hover:underline"> {p.name} </a>
+  <a href="https://www.aoe2companion.com/profile/{pid}"   target="_blank"  class="dark:text-primary-500 hover:underline"> {row.name} </a>
   {/if}
 
 </span>

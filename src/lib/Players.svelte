@@ -38,43 +38,16 @@ $:{$players.forEach((player)=>{
     value: v => v.name,
     sortable: true,
     headerClass: "text-left",
+    renderComponent:PlayerName
   },
   {
     key: "elo",
-    title: "ELO变化",
-    value: v => v.newqrating-v.qrating,
-    sortable: true,
-    headerClass: "text-left",
-  },
-  {
-    key: "games",
-    title: "局数",
-    value: v => v.games,
-    sortable: true,
-    headerClass: "text-left",
-  },
-  {
-    key: "wins",
-    title: "胜",
-    value: v => v.wins,
-    sortable: true,
-    headerClass: "text-left",
-  },
-  {
-    key: "loses",
-    title: "败",
-    value: v => v.games-v.wins,
-    sortable: true,
-    headerClass: "text-left td ",
-  },
-  {
-    key: "wg",
     title: "胜率",
-    value: v => v.wg,
+    value: v => (v.wins/v.games*100).toFixed(0)+"%",
     sortable: true,
-    headerClass: "text-left td ",
-  }
-  ,
+    headerClass: "text-left",
+  },
+  
   {
     key: "date",
     title: "上次群局",

@@ -9,10 +9,62 @@
   import { Select, Label } from "flowbite-svelte";
   import {players,qyplayers} from '$lib/store.js';
   import SvelteTable from "svelte-table";
+  import PlayerName from "$lib/PlayerName.svelte";
+  let obj =[]
+  function ofs(profile_id){
+    let a= $players.find((ele) => {
+          return ele.profile_id==profile_id
+        })
+        if (a==undefined){
+              return false
+          }
+        else{
+              return a
+          }
+  }
+  function getqyteable(){
   
+  obj =[]
+  const url = 'https://app.teable.cn/api/table/tbl1uPOYKdac17kp0zz/record?cellFormat=json&fieldKeyType=name&filterByTql=%7Bfield%7D%20%3D%20%27Completed%27%20AND%20%7Bfield%7D%20%3E%205&take=200&skip=0';
+  const options = {method: 'GET', headers: {Authorization: 'Bearer teable_acc6TG3GbDXIOzfr3pS_99GCvZ9joUOxXwi3rF+nVgmt2TfsJMo4ABEioeKwP6c='}};
+  try {
+    const response =  fetch(url, options).then(function(response) {
+      return response.json();
+    }).then(function(playersJson) {
+        playersJson.records.forEach((p)=>{
+        p.fields.id=p.id
+        obj.push(p.fields)
+        obj=obj
+      })})
+       console.log(obj);
+    } catch (error) {
+    console.error(error);
+  }
+  }
+  //getqyteable()
+  function upteable(id,newqrating,games,wins,loses,date,matchID){
+         
+         const url = 'https://app.teable.cn/api/table/tbl1uPOYKdac17kp0zz/record/'+id;
+         const eloinfo={"fields":{"newqrating":newqrating,'games':games,"wins":wins,"loses":loses,"matchID":matchID,"date":date}}
+         
+         const options = {
+               method: 'PATCH',
+               headers: {
+               Authorization: 'Bearer teable_acc6TG3GbDXIOzfr3pS_99GCvZ9joUOxXwi3rF+nVgmt2TfsJMo4ABEioeKwP6c=',
+               'content-type': 'application/json'
+                },
+               body: '{"fieldKeyType":"name","typecast":true,"record":'+JSON.stringify(eloinfo)+'}'
+          };   
+          console.log(options);
+         const response6 = fetch(url, options).then(function(response) {
+                 return response.json();
+               }).then(function(playersJson) {
+                  const data =  playersJson;
+                  console.log(data);})
+  }
   let tplayers=[]
   $players.forEach((p)=>{
-       tplayers.push({profile_id:p.profile_id,status:p.status,name:p.name,games:0,wins:0,qrating:0,newqrating:0,elo:0})
+       tplayers.push({profile_id:p.profile_id,status:p.status,name:p.name,games:0,wins:0,loses:0,wl:0,qrating:p.qrating,newqrating:p.qrating,elo:0})
        tplayers=tplayers
       })  
   $:{ $qyplayers.sort(function(a, b){return  a.name.localeCompare(b.name)})   
@@ -93,7 +145,7 @@
    }
   tplayers=[]
   $players.forEach((p)=>{
-       tplayers.push({profile_id:p.profile_id,status:p.status,name:p.name,games:0,wins:0,loses:0,wl:0,qrating:0,newqrating:0,elo:0})
+       tplayers.push({profile_id:p.profile_id,status:p.status,name:p.name,games:0,wins:0,loses:0,wl:0,qrating:p.qrating,newqrating:p.qrating,elo:0})
        tplayers=tplayers
       })  
    let oldmatches = newmatches
@@ -105,7 +157,7 @@
           if(tplayers[t].profile_id==p.profile_id && (new Date(match['finished']).getTime()-new Date(match['started']).getTime())>=600000){
           tplayers[t].games++
           if(p.won){tplayers[t].wins++}
-          if(tplayers[t].qrating==0){tplayers[t].qrating=p.qrating}
+          if(tplayers[t].games==0){tplayers[t].qrating=p.qrating}
           tplayers[t].newqrating=p.newqrating
           tplayers[t].elo=tplayers[t].elo+p.qelo
           tplayers[t].loses=tplayers[t].games-tplayers[t].wins
@@ -115,12 +167,18 @@
       })
     })
    })  
-
+  //obj.forEach((p)=>{
+  //        tplayers.forEach((ppsum)=>{
+  //          if(ppsum.profile_id==p.profile_id)
+  //        {upteable(p.id,ppsum.newqrating,ppsum.games,ppsum.wins,ppsum.loses,ppsum.date,ppsum.matchID)}
+  //      })
+   //      })
    function tplayerscheckAdult(p) {
         
         return   p.status==1 && p.games>0;
       }
       tplayers=tplayers.filter(tplayerscheckAdult)
+      tplayers.sort(function(a, b){return b.games-a.games})
   console.log(tplayers)
   newmatches.sort(function(a, b){return b.match_id-a.match_id})
    }
@@ -144,48 +202,49 @@ const columns = [
     value: v => v.name,
     sortable: true,
     headerClass: "text-left",
+    renderComponent:PlayerName
   },
   {
     key: "newqrating",
     title: "[QY]Elo",
     value: v => v.newqrating,
     sortable: true,
-    headerClass: "text-left,style='width: 30px;'",
+    headerClass: "text-right",
   },
   {
     key: "elo",
     title: "ELO变化",
-    value: v => v.elo,
+    value: v => v.newqrating-v.qrating,
     sortable: true,
-    headerClass: "text-left",
+    headerClass: "text-right",
   },
   {
     key: "games",
     title: "局数",
     value: v => v.games,
     sortable: true,
-    headerClass: "text-left",
+    headerClass: "text-right",
   },
   {
     key: "wins",
     title: "胜",
     value: v => v.wins,
     sortable: true,
-    headerClass: "text-left",
+    headerClass: "text-right",
   },
   {
     key: "loses",
     title: "败",
     value: v => v.loses,
     sortable: true,
-    headerClass: "text-left td ",
+    headerClass: "text-right",
   },
   {
     key: "wl",
     title: "胜率",
     value: v => v.wl,
     sortable: true,
-    headerClass: "text-left td ",
+    headerClass: "text-right",
   }
   ];
 </script>
@@ -240,7 +299,7 @@ const columns = [
       </span>
     </td>
     <td class="nowrap player">
-      {player.name}
+      {ofs(player.profile_id).name}
     </td>
     <td class="nowrap">
       {player.civ_name}

@@ -10,7 +10,7 @@
     </span>
   </td>
   <td class="nowrap player">
-    <PlayerName p={player} /> 
+    <PlayerName row={player} /> 
   </td>
   <td class="nowrap">
     {player.civName}
