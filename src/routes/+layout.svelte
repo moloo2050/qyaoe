@@ -213,7 +213,7 @@
         // @ts-ignore
         $profile_ids=objprofile_ids
         const response2 = await fetch('https://aoe2.pages.dev/newmatches', options);
-        let objnewmatches =await response.json()
+        let objnewmatches =await response2.json()
         // @ts-ignore
         objnewmatches.sort(function(a, b){return a.match_id-b.match_id})
         for (let i = 0; i < objnewmatches.length; i++) {
