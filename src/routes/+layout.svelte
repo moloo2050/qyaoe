@@ -219,7 +219,7 @@
         for (let i = 0; i < objnewmatches.length; i++) {
           const element = JSON.parse(objnewmatches[i].matchelo);
           if($matches.length>0 && $matches[0].match_id<objnewmatches[i].id){
-             $matches.push(element)
+             $matches.unshift(element)
              $matches=$matches
           }
           
