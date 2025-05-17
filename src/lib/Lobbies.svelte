@@ -6,7 +6,7 @@
 
     let {onlobby}=$props();
     import MatchPlayer from "$lib/MatchPlayer.svelte";
-    import {HomeOutline,EyeOutline } from 'flowbite-svelte-icons';
+    import {HomeOutline,EyeOutline,AddColumnBeforeOutline } from 'flowbite-svelte-icons';
     import PlayerName from "$lib/PlayerName.svelte";
     import {players} from '$lib/store.js';
     let playerteam = $derived.by(() => {
@@ -106,7 +106,7 @@
       </span>
   
       <span class="actions">
-        <a href= 'aoe2de://0/{onlobby.matchId}'><EyeOutline /></a>
+        <a href= 'aoe2de://0/{onlobby.matchId}'><AddColumnBeforeOutline /></a>
       </span>
     </td>
   </tr>

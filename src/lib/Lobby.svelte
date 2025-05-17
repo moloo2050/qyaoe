@@ -2,7 +2,7 @@
 // @ts-nocheck
 
     export let slots;
-    import {HomeOutline,EyeOutline } from 'flowbite-svelte-icons';
+    import {HomeOutline,EyeOutline,AddColumnBeforeOutline  } from 'flowbite-svelte-icons';
     import PlayerName from "$lib/PlayerName.svelte";
     
   </script>
