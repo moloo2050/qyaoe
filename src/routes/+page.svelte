@@ -24,7 +24,7 @@
   };
   // @ts-ignore
   const response =  await fetch('/news', options).then(res => res.json())
-  const response1=  await fetch('/oldmatches', options).then(res => res.json())
+  const response1=  await fetch('/oldes', options).then(res => res.json())
   function checkAdult(match) {
       return  match.teams[0][0].qelo ;
     }
