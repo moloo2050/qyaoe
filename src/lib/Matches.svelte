@@ -1,13 +1,13 @@
 <script>
 // @ts-nocheck
 
-  export let matches;
+ 
   import {HomeOutline,EyeOutline } from 'flowbite-svelte-icons';
   import MatchPlayer from "$lib/MatchPlayer.svelte";
   import  Pagination  from '$lib/Pagination.svelte';
   import { Button } from 'flowbite-svelte';
   import { Select, Label } from "flowbite-svelte";
-  import {players,qyplayers} from '$lib/store.js';
+  import {matches,players,qyplayers} from '$lib/store.js';
   import SvelteTable from "svelte-table";
   import PlayerName from "$lib/PlayerName.svelte";
   let obj =[]
@@ -78,7 +78,7 @@
   let qyplayered = "all";
   let maps=[{'value':'Arabia','name':'Arabia'}]
   let map="all"
-  matches.forEach((match)=>{
+  $matches.forEach((match)=>{
       function checkAdult(map) {
       return map.name == match.map_name;
     }
@@ -93,7 +93,7 @@
   
   let values
 
-  let newmatches =matches
+  let newmatches =$matches
   $:{
     
     if(qyplayered!="all"){
@@ -106,7 +106,7 @@
           profile_ids.push(p.profile_id)})}
       return   profile_ids.includes (Number(qyplayered));
     }
-    newmatches = matches.filter(checkAdult)
+    newmatches = $matches.filter(checkAdult)
     
    }
    if(qyplayered!="all"&&map!="all"){
@@ -120,7 +120,7 @@
           profile_ids.push(p.profile_id)})}
       return   profile_ids.includes (Number(qyplayered));
     }
-    midmatches = matches.filter(checkAdult)
+    midmatches = $matches.filter(checkAdult)
     
     
       function checkAdult2(match) {
@@ -135,13 +135,13 @@
         
       return   match.map_name==map;
     }
-    newmatches = matches.filter(checkAdult)
+    newmatches = $matches.filter(checkAdult)
     
    }
    
    if(qyplayered=="all"&&map=="all"){
    
-    newmatches = matches
+    newmatches = $matches
    }
   tplayers=[]
   $players.forEach((p)=>{

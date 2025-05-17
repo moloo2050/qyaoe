@@ -189,6 +189,7 @@
         accept: 'application/json',
         }
       };  
+      
       const response = await fetch('https://aoe2.pages.dev/players', options);
 		  let objplayers =await response.json()
       // @ts-ignore
@@ -211,6 +212,18 @@
         $qyplayers=objqyplayers 
         // @ts-ignore
         $profile_ids=objprofile_ids
+        const response2 = await fetch('https://aoe2.pages.dev/newmatches', options);
+        let objnewmatches =await response.json()
+        // @ts-ignore
+        objnewmatches.sort(function(a, b){return a.match_id-b.match_id})
+        for (let i = 0; i < objnewmatches.length; i++) {
+          const element = JSON.parse(objnewmatches[i].matchelo);
+          if($matches.length>0 && $matches[$matches.length-1].match_id<objnewmatches[i].id){
+             $matches.push(element)
+             $matches=$matches
+          }
+          
+  }// @ts-ignore
     }, 60000)
     return () => {
       clearInterval(interval)
