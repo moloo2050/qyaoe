@@ -105,7 +105,7 @@
     <div class="ml-6">
         {#if $matches.length > 0}
     
-        <Matches  matches ={$matches} />
+        <Matches/>
     
     {/if}
   </div> 
