@@ -218,7 +218,7 @@
         objnewmatches.sort(function(a, b){return a.match_id-b.match_id})
         for (let i = 0; i < objnewmatches.length; i++) {
           const element = JSON.parse(objnewmatches[i].matchelo);
-          if($matches.length>0 && $matches[$matches.length].match_id<objnewmatches[i].id){
+          if($matches.length>0 && $matches[0].match_id<objnewmatches[i].id){
              $matches.push(element)
              $matches=$matches
           }
