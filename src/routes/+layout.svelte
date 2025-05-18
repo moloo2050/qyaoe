@@ -243,7 +243,9 @@
 
 <!-- svelte-ignore slot_element_deprecated -->
 <main class="mt-2">
+  <div class="aspect-video">
 	<slot />
+  </div>
   <Footer class="float-left">
     <div class="sm:flex sm:items-center sm:justify-between ">
       <FooterCopyright href="/" by="Flowbite™" year={2025} />

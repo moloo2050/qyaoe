@@ -125,14 +125,7 @@
     transition: background-color 0.3s;
   }
   :global(.dark) {
-    background-color: #222222;
     color: #ffffff;
     color-scheme: dark;
-  }
-  :global(body.dark #footer) {
-    background-color: #303030;
-  }
-  :global(body.dark a) {
-    color: #00bc8c;
   }
 </style>

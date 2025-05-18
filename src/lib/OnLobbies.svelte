@@ -39,7 +39,7 @@
         <HomeOutline size="md"  class="text-red-700 dark:text-green-300 inline m-1"/>{item.name} 
       </span>
       <span class="actions">
-        <a href= 'aoe2de://0/{item.matchId}'><AddColumnBeforeOutline /></a>
+        <a href= 'aoe2de://0/{item.matchId}'><AddColumnBeforeOutline size="md"  class="text-red-700 dark:text-green-300 inline m-1"/></a>
       </span>
       <span class="actions">
         <a href= 'aoe2de://0/{item.matchId}'>{item.mapName} || {item.server}-{item.totalSlotCount - item.players.filter((player)=>{return player.name=="Open"}).length}/{item.totalSlotCount}</a>

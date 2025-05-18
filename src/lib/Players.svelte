@@ -80,7 +80,7 @@ $:{$players.forEach((player)=>{
     padding-right: 4px;
   }
   :global(body.dark #players .row > td) {
-    border-top: 1px solid #303030;
+    border-top: 1px solid #000000;
   }
   .nowrap {
     white-space: nowrap;

@@ -106,7 +106,7 @@
       </span>
   
       <span class="actions">
-        <a href= 'aoe2de://0/{onlobby.matchId}'><AddColumnBeforeOutline /></a>
+        <a href= 'aoe2de://0/{onlobby.matchId}'><AddColumnBeforeOutline  size="md" class="text-red-700 dark:text-green-300 inline m-1"/></a>
       </span>
     </td>
   </tr>

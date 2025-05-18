@@ -1,6 +1,20 @@
 <script>
   export let player;
   import PlayerName from "$lib/PlayerName.svelte";
+  import {players} from '$lib/store.js';
+  // @ts-ignore
+  function ofs(profile_id){
+        let a=  $players.find((ele) => {
+          return ele.profile_id==profile_id
+        })
+
+          if (a==undefined){
+              return false
+          }
+          else{
+              return a
+          }
+    } 
 </script>
 
 <tr>
