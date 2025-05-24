@@ -1,15 +1,10 @@
-import https from "https"
+//import https from "https"
 import axios from 'axios'
 // @ts-ignore
 export async function GET({fetch,params}) {
-  const httpsAgent = new https.Agent({
-    rejectUnauthorized: false
-  });
+  //const httpsAgent = new https.Agent({rejectUnauthorized: false});
   const options = {
     method: 'GET',
-    agent: new https.Agent({
-    rejectUnauthorized: false
-  }),
     headers: {
     accept: 'application/json',
     
@@ -19,7 +14,7 @@ export async function GET({fetch,params}) {
   // @ts-ignore
   const  playeres =  await fetch('https://aoe2.pages.dev/players', options).then(res => res.json())
   // @ts-ignore
-  const  matches =  await fetch('https://data.aoe2companion.com/api/matches?profile_ids='+params.profile_id+'&page=1', options).then(res => res.json())
+  //const  matches =  await fetch('https://data.aoe2companion.com/api/matches?profile_ids='+params.profile_id+'&page=1', options).then(res => res.json())
   // @ts-ignore
   const  lobbies = await axios.get('https://aoe-api.reliclink.com/community/advertisement/findAdvertisements?title=age2', { httpsAgent })
      //console.log(lobbies.data)
