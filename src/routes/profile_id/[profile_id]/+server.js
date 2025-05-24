@@ -16,7 +16,7 @@ export async function GET({fetch,params}) {
   // @ts-ignore
   //const  matches =  await fetch('https://data.aoe2companion.com/api/matches?profile_ids='+params.profile_id+'&page=1', options).then(res => res.json())
   // @ts-ignore
-  const  lobbies = await axios.get('https://aoe-api.reliclink.com/community/advertisement/findAdvertisements?title=age2', { httpsAgent })
+  //const  lobbies = await axios.get('https://aoe-api.reliclink.com/community/advertisement/findAdvertisements?title=age2', { httpsAgent })
      //console.log(lobbies.data)
   let bili =""
     // @ts-ignore
@@ -40,6 +40,6 @@ export async function GET({fetch,params}) {
             }
       
           });   
-  return new Response(JSON.stringify({profile_id:params.profile_id,lobbies:lobbies.data,playeres:playeres}))
+  return new Response(JSON.stringify({profile_id:params.profile_id,playeres:playeres}))
     
 }
