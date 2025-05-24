@@ -31,15 +31,7 @@ export async function GET({fetch,params}) {
     console.log(response4.data);
     // @ts-ignore
     
-        // @ts-ignore
-  playeres.forEach((r)=>{
-            // @ts-ignore
-            if(r.bilibili!=null){
-              // @ts-ignore
-              r['bili']=response4.data.data.by_room_ids[r.bilibili]
-            }
-      
-          });   
-  return new Response(JSON.stringify({profile_id:params.profile_id,playeres:playeres}))
+  
+  return new Response(JSON.stringify({profile_id:params.profile_id,playeres:playeres,bili:response4.data}))
     
 }
