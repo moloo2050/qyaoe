@@ -1,7 +1,5 @@
 <script>
 // @ts-nocheck
-
- 
   import {HomeOutline,EyeOutline } from 'flowbite-svelte-icons';
   import MatchPlayer from "$lib/MatchPlayer.svelte";
   import  Pagination  from '$lib/Pagination.svelte';
@@ -67,7 +65,8 @@
        tplayers.push({profile_id:p.profile_id,status:p.status,name:p.name,games:0,wins:0,loses:0,wl:0,qrating:p.qrating,newqrating:p.qrating,elo:0})
        tplayers=tplayers
       })  
-  $:{ $qyplayers.sort(function(a, b){return  a.name.localeCompare(b.name)})   
+  $:{ 
+      $qyplayers.sort(function(a, b){return  a.name.localeCompare(b.name)})   
       $qyplayers.forEach((player)=>{
       player.value=player.profile_id
       player.qn= player.newqrating-player.qrating
@@ -76,19 +75,9 @@
       
     }
   let qyplayered = "all";
-  let maps=[{'value':'Arabia','name':'Arabia'}]
+  let maps=[{'value':'Arabia','name':'Arabia',"games":0}]
   let map="all"
-  $matches.forEach((match)=>{
-      function checkAdult(map) {
-      return map.name == match.map_name;
-    }
-      if (maps.findIndex(checkAdult)==-1){
-      maps.push({'value':match.map_name,'name':match.map_name})
-      maps=maps
-      }
-      
-     })
-  maps.sort(function(a, b){return  a.name.localeCompare(b.name)})
+  
 
   
   let values
@@ -121,10 +110,7 @@
       return   profile_ids.includes (Number(qyplayered));
     }
     midmatches = $matches.filter(checkAdult)
-    
-    
       function checkAdult2(match) {
-        
       return   match.map_name==map;
     }
     newmatches = midmatches.filter(checkAdult2)
@@ -143,6 +129,20 @@
    
     newmatches = $matches
    }
+   maps=[{'value':'Arabia','name':'Arabia',"games":0}]
+   newmatches.forEach((match)=>{
+      function checkAdult(map) {
+      return map.name == match.map_name;
+    }
+      if (maps.findIndex(checkAdult)==-1){
+      maps.push({'value':match.map_name,'name':match.map_name,"games":0})
+      maps=maps
+      }
+      if (maps.findIndex(checkAdult)>=0){
+      maps[maps.findIndex(checkAdult)].games+=1
+      }
+     })
+  maps.sort(function(a, b){return  b.games-a.games})
   tplayers=[]
   $players.forEach((p)=>{
        tplayers.push({profile_id:p.profile_id,status:p.status,name:p.name,games:0,wins:0,loses:0,wl:0,qrating:p.qrating,newqrating:p.qrating,elo:0})
@@ -174,7 +174,6 @@
   //      })
    //      })
    function tplayerscheckAdult(p) {
-        
         return   p.status==1 && p.games>0;
       }
       tplayers=tplayers.filter(tplayerscheckAdult)
@@ -264,8 +263,8 @@ const columns = [
 
  <Select id="maps" size="sm" class="mt-2 w-40" bind:value={map} placeholder="">
   <option selected value="all">All</option>
-  {#each maps as { value, name }}
-    <option {value}>{name}</option>
+  {#each maps as { value, name,games }}
+    <option {value}>{name}({games})</option>
   {/each}
  </Select>
  

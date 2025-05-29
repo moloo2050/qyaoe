@@ -1,6 +1,6 @@
 <script>
   // @ts-nocheck
- import {slots,matches,players,qyplayers,onlobbyes, onmatches ,qyonlobbyes, qyonmatches ,connection} from '$lib/store.js';
+ import {news,slots,matches,matchids,players,qyplayers,onlobbyes, onmatches ,qyonlobbyes, qyonmatches ,connection} from '$lib/store.js';
  import { onMount } from 'svelte';
  import { Tabs, TabItem } from 'flowbite-svelte';
  import Players from "$lib/Players.svelte";
@@ -12,26 +12,6 @@
  import Lobby from "$lib/Lobby.svelte";
  import News from "$lib/News.svelte";
  import Matches from "$lib/Matches.svelte";
- let news={}
- $matches= []
- onMount(async () => {
-     const options = {
-      method: 'GET',
-      headers: {
-      accept: 'application/json',
-      
-    }
-  };
-  // @ts-ignore
-  const response =  await fetch('/news', options).then(res => res.json())
-  const response1=  await fetch('/oldes', options).then(res => res.json())
-  function checkAdult(match) {
-      return  match.teams[0][0].qelo ;
-    }
-    $matches = response1.matches.filter(checkAdult)
-  console.log($matches)
-  news=response
-    })
 </script>
 
 {#if !$connection}
@@ -97,8 +77,8 @@
     </div>
   </TabItem>
   <TabItem  title="相关信息">
-    {#if news.news}
-    <News news={news} />
+    {#if $news.news}
+    <News news={$news} />
     {/if}
   </TabItem>
   <TabItem  title="QY4V4({$matches.length})">

@@ -2,10 +2,182 @@
   import "../app.css";
   import { Footer, FooterCopyright, FooterLinkGroup, FooterLink,DarkMode } from 'flowbite-svelte';
   import { onMount } from 'svelte';
-  import {matches,players,qyplayers,qyonlobbyes,onlobbyes,qyonslotes,profile_ids,onmatches,connection} from '$lib/store.js';
+  import {news,matches,matchids,players,qyplayers,qyonlobbyes,onlobbyes,qyonslotes,profile_ids,onmatches,connection} from '$lib/store.js';
+    // @ts-ignore
+  function ofs(profile_id){
+    // @ts-ignore
+    let a= $players.find((ele) => {
+          return ele.profile_id==profile_id
+        })
+        if (a==undefined){
+              return 1600
+          }
+          else{
+              return a
+          }
+    }
+  // @ts-ignore
+  function matchelo(player,a,b,kFactor = 32) {
+    if(player['won'] === null) {
+    return [0,0]
+    } else if (player['won'] === true){
+    return elo([a,b],[1,0],kFactor)
+    } else {
+    return elo([b,a],[0,1],kFactor)
+    }
+    }
+  // @ts-ignore
+  const elo = ([a, b], [c,d],kFactor = 32) => {
+  // @ts-ignore
+  const expectedScore = (self, opponent) => 1 / (1 + 10 ** ((opponent - self) / 400));
+  // @ts-ignore
+  const newRating = (rating, i) => kFactor * (i - expectedScore(i ? a : b, i ? b : a));
+  return [Math.round(newRating(a, c)/4), Math.round(newRating(b, d)/4)];
+  };  
+  // @ts-ignore
+function eloinsertLiveGames (Matches) {     
+        // @ts-ignore
+        Matches.forEach((match) =>  {
+        const teams = match['teams1']
+        const team1 = teams[0]
+        const team2 = teams[1]
+        const team1Player1 = teams[0][0]
+        const team1Player2 = teams[0][1]
+        const team1Player3 = teams[0][2]
+        const team1Player4 = teams[0][3]
+        const team2Player1 = teams[1][0]
+        const team2Player2 = teams[1][1]
+        const team2Player3 = teams[1][2]
+        const team2Player4 = teams[1][3]
+        if ((new Date(match['finished']).getTime()-new Date(match['started']).getTime())<600000 || team1Player1.won==null) {
+        } else {
+        let team1EloAvg = 0
+        let team2EloAvg = 0 
+        let team1Elo = 0
+        let team2Elo = 0 
+        // @ts-ignore
+        team1.forEach((player) =>  {
+            if(ofs(player.profile_id).status==2 || ofs(player.profile_id).status==4){
+                let id = ofs(player.profile_id).qrating
+                player.profile_id = id
+                team1EloAvg += Number(ofs(player.profile_id).newqrating)
+            }
+            else{
+                team1EloAvg += Number(ofs(player.profile_id).newqrating)
+            }
+             })
+        team1EloAvg = Math.floor(team1EloAvg)
+        // @ts-ignore
+        team2.forEach((player) =>  {
+            if(ofs(player.profile_id).status==2 || ofs(player.profile_id).status==4){
+                let id = ofs(player.profile_id).qrating
+                player.profile_id = id
+                team2EloAvg += Number(ofs(player.profile_id).newqrating)
+            }
+            else{
+                team2EloAvg += Number(ofs(player.profile_id).newqrating)
+            }
+             })
+           
+        team2EloAvg = Math.floor(team2EloAvg)
+          let elo = matchelo(team1Player1,team1EloAvg,team2EloAvg,128)
+          team1Elo = Number(elo[0])
+          team2Elo = Number(elo[1])
+          // @ts-ignore
+          team1.forEach((player) =>  { 
+           
+            if(team1Elo>=0){
+             
+             player.qelo=Number((team1Elo*4*(ofs(player.profile_id).newqrating/team1EloAvg)).toFixed(0))
+             
+             player.qrating=Number(ofs(player.profile_id).newqrating),
+             player.newqrating=Number(ofs(player.profile_id).newqrating+player.qelo)
+            }else if(team1Elo<0){
+             player.qelo=Number((team1Elo*4*(ofs(player.profile_id).newqrating/team1EloAvg)).toFixed(0))
+             player.qrating=Number(ofs(player.profile_id).newqrating),
+             player.newqrating=Number(ofs(player.profile_id).newqrating+player.qelo)
+            }
+            ofs(player.profile_id).newqrating=player.newqrating
+          })
+          // @ts-ignore
+          team2.forEach((player) =>  {
+             
+              if(team2Elo>=0){
+             player.qelo=Number((team2Elo*4*(ofs(player.profile_id).newqrating/team2EloAvg)).toFixed(0))
+             player.qrating=Number(ofs(player.profile_id).newqrating),
+             player.newqrating=Number(ofs(player.profile_id).newqrating+player.qelo)
+            }else if(team2Elo<0){
+             player.qelo=Number((team2Elo*4*(ofs(player.profile_id).newqrating/team2EloAvg)).toFixed(0))
+             player.qrating=Number(ofs(player.profile_id).newqrating),
+             player.newqrating=Number(ofs(player.profile_id).newqrating+player.qelo)
+            }
+            ofs(player.profile_id).newqrating=player.newqrating
+          })
+        
+        
+        let team1won = 0
+        let team2won = 0
+        if (team1[0].won==true){
+          team1won = 1
+          team2won = 0
+        }
+        else if(team1[0].won==false)
+        {
+          team1won = 0
+          team2won = 1
+        }
+        
+        // @ts-ignore
+        team1.forEach((player) => {
+          ofs(player.profile_id).newqrating=player.newqrating,
+          ofs(player.profile_id).wins+=team1won,
+          ofs(player.profile_id).loses+=team2won,
+          ofs(player.profile_id).games=ofs(player.profile_id).wins+ofs(player.profile_id).loses
+          ofs(player.profile_id).matchID= match.matchId
+          ofs(player.profile_id).date= match.started })
+        // @ts-ignore
+        team2.forEach((player) =>  {
+          ofs(player.profile_id).newqrating=player.newqrating,
+          ofs(player.profile_id).wins+=team2won,
+          ofs(player.profile_id).loses+=team1won,
+          ofs(player.profile_id).games=ofs(player.profile_id).wins+ofs(player.profile_id).loses
+          ofs(player.profile_id).matchID= match.matchId
+          ofs(player.profile_id).date= match.started  })
+          
+      }      
+    });}
   let { data } = $props();
   // @ts-ignore
-  let teableid=[]
+  let newmatches=[]
+  let oldmathcid=0
+  // @ts-ignore
+  onMount(async () => {
+      const options = {
+      method: 'GET',
+      headers: {
+      accept: 'application/json', 
+      }
+      };
+  // @ts-ignore
+  const response =  await fetch('/news', options).then(res => res.json())
+  const response1=  await fetch('/oldes', options).then(res => res.json())
+  // @ts-ignore
+  function checkAdult(match) {
+      return  match.teams[0][0].qelo 
+      //&& match.match_id>192540768 ;
+    }
+  $matches = response1.matches.filter(checkAdult)
+  console.log($matches)
+  // @ts-ignore
+  function multiplyArrayElement(match) {
+    return match.match_id;
+  }
+   
+  $matchids=$matches.map(multiplyArrayElement);
+  console.log($matchids)
+  oldmathcid=$matchids[0]
+  $news=response
+    })
   $profile_ids=[]
   $qyplayers=[]
   $players=data.players
@@ -190,41 +362,126 @@
         }
       };  
       
-      const response = await fetch('https://aoe2.pages.dev/players', options);
-		  let objplayers =await response.json()
+      const response = await fetch("https://data.aoe2companion.com/api/matches?profile_ids="+$profile_ids.toString()+"&search=&leaderboard_ids=unranked&page=1", options);
+		  let result =await response.json()
+      let resultmatches=result.matches
+       console.log(resultmatches)
       // @ts-ignore
-      let objprofile_ids=[]
-      // @ts-ignore
-      let objqyplayers=[]
-      // @ts-ignore
-      objplayers.forEach((p)=>{
+      let  psumprofile_id=[]
+       // @ts-ignore
+      resultmatches.sort(function(a, b){return a.matchId- b.matchId})
+       // @ts-ignore
+      resultmatches.forEach((match) => {
+      if(match.matchId){
+                // @ts-ignore
+                var p=[]
+                match['match_id']=match.matchId
+                match['map_image_url']=match.mapImageUrl
+                match['map_name']=match.mapName
+                match['leaderboard_id']=match.leaderboardId
+                match.players=[]
+                match.teams1=[]
+                match.teams1[0]=[]
+                match.teams1[1]=[]
+                if( match.teams.length==2){
+                // @ts-ignore
+                match.teams[0].players.forEach((player)=>{
+                  player['profile_id']=player['profileId']
+                  player['civ_name']=player['civName']
+                  match.players.push(player)
+                  match.teams1[0].push(player)
+                 });
+                // @ts-ignore
+                match.teams[1].players.forEach((player)=>{
+                  player['profile_id']=player['profileId']
+                  player['civ_name']=player['civName']
+                  match.players.push(player)
+                  match.teams1[1].push(player)}
+                   ); 
+                   match.teams=match.teams1
+                 }
+                 if( match.teams.length==1){
+                   // @ts-ignore
+                   match.teams[0].players.forEach((player)=>{
+                     player['profileId']=player.profile_id
+                     player['civName']=player.civ_name
+                     match.players.push(player)
+                     match.teams1[0].push(player)
+                    });
+                   
+                    }  
+                // @ts-ignore
+                match.players.forEach((player)=>{
+                    // @ts-ignore
+                    if($profile_ids.includes(player.profile_id)){
+                       p.push(1)
+                       // @ts-ignore
+                       p=p
+                    if(ofs(player.profile_id).status==2 || ofs(player.profile_id).status==4){
+                        let id = ofs(player.profile_id).qrating
+                        psumprofile_id.push(id) 
+                        // @ts-ignore
+                        psumprofile_id=psumprofile_id
+                    }
+                    else{
+                        psumprofile_id.push(player.profile_id)
+                        // @ts-ignore
+                        psumprofile_id=psumprofile_id
+                    }
+                       }
+                     else{
+                       p.push(0)
+                       // @ts-ignore
+                       p=p
+                       }
+                    });
+                
+               let psum =0
+               // @ts-ignore
+               p.forEach((pnumber)=>{psum +=pnumber})
+               // @ts-ignore
+               if(psum==8 && (new Date(match['finished']).getTime()-new Date(match['started']).getTime())>600000 && $matchids.includes(match.matchId)==false && match.matchId>oldmathcid){
+                      $matchids.push(match.matchId)
+                      $matchids=$matchids
+                      newmatches.push(match)
+                      // @ts-ignore
+                      newmatches=newmatches
+                      eloinsertLiveGames([match])
+                      oldmathcid=match.matchId
+                         }
+                    // @ts-ignore
+               if(psum==8 && match.finished!=null && $matchids.includes(match.matchId)==false){
+                          // @ts-ignore
+                       $matchids.push(match.matchId)
+                       $matchids=$matchids
+                             }
+                        }
+         })
+         
+      if(newmatches.length>0){
+         // @ts-ignore
+         console.log(newmatches)
+         // @ts-ignore
+         $matches = $matches.concat(newmatches)
+         newmatches=[]
+         // @ts-ignore
+         $qyplayers.sort(function(a, b){return b.matchID-a.matchID})
+         
+      $qyplayers.forEach((p)=>{
         if(p.status==1 || p.status==2){
-          objprofile_ids.push(p['profile_id'])
+          $profile_ids.push(p['profile_id'])
           // @ts-ignore
-          objprofile_ids=objprofile_ids
+          $profile_ids=$profile_ids
           }
         if(p.status==1){
-          objqyplayers.push(p)
+          $qyplayers.push(p)
           // @ts-ignore
-          objqyplayers=objqyplayers
+         $qyplayers=$qyplayers
         }})
-        // @ts-ignore
-        $qyplayers=objqyplayers 
-        // @ts-ignore
-        $profile_ids=objprofile_ids
-        const response2 = await fetch('https://aoe2.pages.dev/newmatches', options);
-        let objnewmatches =await response2.json()
-        // @ts-ignore
-        objnewmatches.sort(function(a, b){return a.match_id-b.match_id})
-        for (let i = 0; i < objnewmatches.length; i++) {
-          const element = JSON.parse(objnewmatches[i].matchelo);
-          if($matches.length>0 && $matches[0].match_id<objnewmatches[i].id){
-             $matches.unshift(element)
-             $matches=$matches
-          }
-          
-  }// @ts-ignore
-    }, 60000)
+        
+        
+      }
+          }, 60000)
     return () => {
       clearInterval(interval)
     }
