@@ -166,16 +166,18 @@ function eloinsertLiveGames (Matches) {
       return  match.teams[0][0].qelo 
       //&& match.match_id>192540768 ;
     }
-  $matches = response1.matches.filter(checkAdult)
-  console.log($matches)
+    
+  $matches =response1.matches.filter(checkAdult)
+  //console.log($matches)
   // @ts-ignore
   function multiplyArrayElement(match) {
     return match.match_id;
   }
    
   $matchids=$matches.map(multiplyArrayElement);
-  console.log($matchids)
-  oldmathcid=$matchids[0]
+  //console.log($matchids)
+  $qyplayers.sort(function(a, b){return b.matchID-a.matchID})
+  oldmathcid=$qyplayers[0].matchID
   $news=response
     })
   $profile_ids=[]
