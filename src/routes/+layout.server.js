@@ -9,7 +9,7 @@ export async function load({fetch}) {
     }
   };
   // @ts-ignore
-  const response =  await fetch('https://aoe2.pages.dev/players', options).then(res => res.json())
+  const response =  await fetch('/players', options).then(res => res.json())
   return {players: await response}
     
 }

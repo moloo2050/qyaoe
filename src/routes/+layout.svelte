@@ -160,14 +160,13 @@ function eloinsertLiveGames (Matches) {
       };
   // @ts-ignore
   const response =  await fetch('/news', options).then(res => res.json())
-  const response1=  await fetch('/oldes', options).then(res => res.json())
+  const response1=  await fetch('/matches', options).then(res => res.json())
   // @ts-ignore
   function checkAdult(match) {
       return  match.teams[0][0].qelo 
-      //&& match.match_id>192540768 ;
     }
     
-  $matches =response1.matches.filter(checkAdult)
+  $matches =response1
   //console.log($matches)
   // @ts-ignore
   function multiplyArrayElement(match) {
